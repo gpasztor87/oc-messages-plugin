@@ -1,7 +1,6 @@
 <?php namespace Autumn\Messages\Components;
 
 use Auth;
-use Cms\Classes\Page;
 use Cms\Classes\ComponentBase;
 use Autumn\Messages\Models\UserMessage;
 use ApplicationException;
@@ -47,11 +46,6 @@ class Messages extends ComponentBase
                 'type'        => 'string'
             ]
         ];
-    }
-
-    public function getRedirectOptions()
-    {
-        return ['' => '- none -'] + Page::sortBy('baseFileName')->lists('baseFileName', 'baseFileName');
     }
 
     /**
