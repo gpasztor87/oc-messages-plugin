@@ -130,4 +130,14 @@ class Message extends ComponentBase
         $this->prepareEntryList();
     }
 
+    public function onDeleteEntry()
+    {
+        $entry = MessageEntry::find(input('entry_id'));
+        if ($entry->user_id == $this->user()->id) {
+            $entry->delete();
+
+            $this->prepareEntryList();
+        }
+    }
+
 }

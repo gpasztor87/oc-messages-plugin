@@ -12,9 +12,8 @@
                 <a
                     href="javascript:;"
                     class="btn btn-primary btn-sm"
-                    data-handler="onInit"
-                    data-control="ajax-modal"
-                    data-update-partial="{{ __SELF__ }}::delete_entry"
+                    data-request="{{ __SELF__ }}::onDeleteEntry"
+                    data-request-confirm="Are you sure want to delete this message?"
                     data-request-data="entry_id: {{ entry.id }}">
                     <i class="fa fa-trash-o"></i>
                 </a>

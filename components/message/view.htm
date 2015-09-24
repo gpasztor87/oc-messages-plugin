@@ -5,10 +5,10 @@
             {% if message.users.count > 2 and (message.originator.id != __SELF__.user.id) %}
                 <a
                     href="javascript:;"
-                    class="btn btn-primary btn-sm tt"
-                    data-handler="onInit"
-                    data-control="ajax-modal"
+                    class="btn btn-link"
+                    data-request="{{ __SELF__ }}::onLeave"
                     data-update-partial="{{ __SELF__ }}::leave_message"
+                    data-request-confirm="Are you sure want to leave from this conversation?"
                     data-request-data="message_id: {{ message.id }}">
                     <i class="fa fa-sign-out"></i>
                 </a>
@@ -16,12 +16,11 @@
             {% for user in message.users %}
                 <a href="javascript:;">
                     <img
-                        src="{{ user.getAvatarThumb('64') }}"
+                        src="{{ user.getAvatarThumb('32') }}"
                         class="img-rounded tt img_margin"
                         data-toggle="tooltip"
                         data-placement="top"
                         title="<strong>{{ user.name }}</strong><br>{{ user.login }}"
-                        style="width: 29px; height: 29px;"
                         alt="{{ user.name }}"
                     />
                 </a>
@@ -31,7 +30,7 @@
     <div class="panel-body">
         <hr style="margin-top: 0;" />
         <ul class="media-list" id="message-list">
-            {% partial __SELF__ ~ '::messages' %}
+            {% partial __SELF__ ~ '::entry' %}
         </ul>
         <div class="row-fluid">
             {{ form_ajax('onReplyMessage', { success: '$("#reply_form_content").val("");', update: { '@view': '#message-entry-list'} }) }}
