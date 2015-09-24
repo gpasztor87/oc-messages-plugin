@@ -1,0 +1,32 @@
+{% if conversations.count %}
+    {% for conversation in conversations %}
+        {% set message = conversation.message %}
+        {% set users = message.users %}
+
+        <li class="entry{% if message.updated_at > conversation.last_viewed %} new{% endif %}">
+            <a href="{{ messagePage }}/{{ message.slug }}">
+                <div class="media">
+                    <!-- show user image -->
+                    <img
+                        src="{{ message.getLastEntry.user.getAvatarThumb('32') }}"
+                        class="media-object img-rounded pull-left"
+                        alt="{{ message.getLastEntry.user.name }}"
+                    />
+
+                    <!-- show content -->
+                    <div class="media-body">
+                        <strong>{{ message.getLastEntry.user.name }}
+                            <small>({{ users.count }}) recipients</small>
+                        </strong>
+                        <h5>{{ message.title }}</h5>
+                        {{ message.getLastEntry.content }}
+                        <br/>
+                        <time class="time" datetime="{{ message.updated_at }}">{{ message.updated_at }}</time>
+                    </div>
+                </div>
+            </a>
+        </li>
+    {% endfor %}
+{% else %}
+    <li class="placeholder">There are no messages yet.</li>
+{% endif %}

@@ -58,6 +58,8 @@ class Notifications extends ComponentBase {
      */
     public function onRun() {
         $this->messagesPage = $this->page['messagesPage'] = $this->property('messagesPage');
+        $this->page['users'] = UserModel::where('id', '!=', Auth::getUser()->id)->get();
+        $this->addJs('assets/js/notification.js');
     }
 
     /**
