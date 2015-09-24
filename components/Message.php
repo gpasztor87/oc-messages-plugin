@@ -140,4 +140,29 @@ class Message extends ComponentBase
         }
     }
 
+    public function onLeave()
+    {
+        $message = $this->getMessage(input('message_id'));
+        if ($message == null) {
+            throw new ApplicationException('Could not find message!');
+        }
+
+        if ($message->users->count() < 3) {
+            throw new ApplicationException('Could not leave message, needs at least 2 persons!');
+        }
+
+        if ($message->originator->id == Auth::getUser()->id) {
+            throw new ApplicationException('Originator could not leave his message!');
+        }
+
+        $userMessage = UserMessage::where('user_id', '=', $this->user()->id)
+            ->where('message_id', '=', $message->id)->first();
+
+        $userMessage->leave();
+
+        return Redirect::to($this->pageUrl($this->page->baseFileName, [
+            $this->propertyName('slug') => null
+        ]));
+    }
+
 }
