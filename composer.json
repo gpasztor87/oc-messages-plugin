@@ -1,0 +1,9 @@
+{
+    "name": "gpasztor87/messages",
+    "description": "User communication platform.",
+    "keywords": ["octobercms", "social"],
+    "require": {
+        "php": ">=5.4.0",
+        "webpatser/laravel-uuid": "2.*"
+    }
+}

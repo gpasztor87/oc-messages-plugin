@@ -1,6 +1,8 @@
 <?php namespace Autumn\Messages;
 
+use RainLab\User\Models\User;
 use System\Classes\PluginBase;
+use Illuminate\Foundation\AliasLoader;
 
 /**
  * Messages Plugin Information File
@@ -23,6 +25,19 @@ class Plugin extends PluginBase
             'description' => 'User communication platform.',
             'icon'        => 'icon-comments'
         ];
+    }
+
+    /**
+     * Boot method, called right before the request route.
+     */
+    public function boot()
+    {
+        $alias = AliasLoader::getInstance();
+        $alias->alias('Uuid', 'Webpatser\Uuid\Uuid');
+
+        User::extend(function($model) {
+            $model->belongsToMany['messages'] = ['Autumn\Messages\Models\Message', 'table' => 'user_messages'];
+        });
     }
 
     /**

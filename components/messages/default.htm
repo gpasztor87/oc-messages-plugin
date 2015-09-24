@@ -12,10 +12,9 @@
     <hr/>
     <ul id="inbox" class="media-list">
         {% if messages.count %}
-            {% for userMessage in messages %}
-                {% set message = userMessage.message %}
+            {% for message in messages %}
                 <li class="entry">
-                    <a href="#">
+                    <a href="{{ message.url }}">
                         <div class="media">
                             <img
                                 src="{{ message.getLastEntry.user.getAvatarThumb('32') }}"

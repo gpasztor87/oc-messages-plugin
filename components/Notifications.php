@@ -6,7 +6,8 @@ use Validator;
 use Carbon\Carbon;
 use Cms\Classes\Page;
 use Cms\Classes\ComponentBase;
-use Autumn\Messages\Models\Message;
+use RainLab\User\Models\User as UserModel;
+use Autumn\Messages\Models\Message as MessageModel;
 use Autumn\Messages\Models\MessageEntry;
 use Autumn\Messages\Models\UserMessage;
 use ApplicationException;
@@ -82,7 +83,7 @@ class Notifications extends ComponentBase {
         }
 
         // Create new Message
-        $message = new Message;
+        $message = new MessageModel;
         $message->title = input('title');
         $message->originator_id = $user->id;
         $message->save();
@@ -95,12 +96,7 @@ class Notifications extends ComponentBase {
         $messageEntry->save();
 
         // Attach also Recipients
-        foreach (input('recipients') as $recipient) {
-            $userMessage = new UserMessage;
-            $userMessage->message_id = $message->id;
-            $userMessage->user_id = $recipient;
-            $userMessage->save();
-        }
+        $message->users()->sync(input('recipients'));
 
         // Attach User Message
         $userMessage = new UserMessage;

@@ -10,17 +10,21 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="new_message_recipients">Recipient(s)</label>
-                    <input type="text" class="form-control" name="recipients" id="new_message_recipients" autocomplete="off" />
+                    <label for="new_message_recipients">Recipient(s) <span class="required">*</span></label>
+                    <select name="recipients[]" class="form-control custom-select" multiple id="new_message_recipients">
+                        {% for user in users %}
+                            <option value="{{ user.id }}" data-image="{{ user.getAvatarThumb('20') }}">{{ user.name }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="new_message_title">Subject</label>
+                    <label for="new_message_title">Subject <span class="required">*</span></label>
                     <input type="text" class="form-control" name="title" id="new_message_title" autocomplete="off" />
                 </div>
 
                 <div class="form-group">
-                    <label for="new_message_message">Message</label>
+                    <label for="new_message_message">Message <span class="required">*</span></label>
                     <textarea class="form-control" name="message" rows="5" id="new_message_message"></textarea>
                 </div>
             </div>

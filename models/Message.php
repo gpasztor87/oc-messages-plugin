@@ -1,5 +1,6 @@
 <?php namespace Autumn\Messages\Models;
 
+use Uuid;
 use Model;
 
 /**
@@ -35,6 +36,28 @@ class Message extends Model
     public $hasMany = [
         'entries' => ['Autumn\Messages\Models\MessageEntry']
     ];
+
+    public function beforeCreate()
+    {
+        $this->slug = Uuid::generate();
+    }
+
+    /**
+     * Sets the "url" attribute with a URL to this object
+     *
+     * @param string $pageName
+     * @param \Cms\Classes\Controller $controller
+     * @return string
+     */
+    public function setUrl($pageName, $controller)
+    {
+        $params = [
+            'id'   => $this->id,
+            'slug' => $this->slug,
+        ];
+
+        return $this->url = $controller->pageUrl($pageName, $params);
+    }
 
     /**
      * Returns the last message of this conversation

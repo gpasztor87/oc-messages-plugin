@@ -2,7 +2,6 @@
 
 use Auth;
 use Cms\Classes\ComponentBase;
-use Autumn\Messages\Models\UserMessage;
 use ApplicationException;
 
 class Messages extends ComponentBase
@@ -63,8 +62,10 @@ class Messages extends ComponentBase
             throw new ApplicationException('You should be logged in.');
         }
 
-        $messages = UserMessage::where('user_id', $user->id)
-            ->orderBy('created_at', 'desc')->get();
+        $messages = $user->messages;
+        $messages->each(function($message) {
+            $message->setUrl($this->page->baseFileName, $this->controller);
+        });
 
         return $messages;
     }
