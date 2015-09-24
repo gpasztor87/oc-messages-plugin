@@ -2,7 +2,7 @@
     <div class="panel-heading">
         {{ message.title }}
         <div class="pull-right">
-            {% if message.users.count > 2 and (message.originator.id != user.id) %}
+            {% if message.users.count > 2 and (message.originator.id != __SELF__.user.id) %}
                 <a
                     href="javascript:;"
                     class="btn btn-primary btn-sm tt"
@@ -31,11 +31,10 @@
     <div class="panel-body">
         <hr style="margin-top: 0;" />
         <ul class="media-list" id="message-list">
-            {% partial __SELF__ ~ '::messages' message=message %}
+            {% partial __SELF__ ~ '::messages' %}
         </ul>
         <div class="row-fluid">
-            {{ form_ajax('onReplyMessage', { 'success': '$("#reply_form_content").val("");' }) }}
-                <input type="hidden" name="message_id" value="{{ message.id }}"/>
+            {{ form_ajax('onReplyMessage', { success: '$("#reply_form_content").val("");', update: { '@view': '#message-entry-list'} }) }}
                 <div class="form-group">
                     <textarea
                         name="content"

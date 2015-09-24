@@ -27,9 +27,6 @@
                                 </h4>
                                 <h5>{{ message.title }}</h5>
                                 {{ message.getLastEntry.content|raw }}
-                                {% if message.updated_at > userMessage.last_viewed %}
-                                    <span class="label label-danger">New</span>
-                                {% endif %}
                             </div>
                         </div>
                     </a>

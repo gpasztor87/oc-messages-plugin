@@ -10,8 +10,8 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="new_message_recipients">Recipient(s) <span class="required">*</span></label>
-                    <select name="recipients[]" class="form-control custom-select" multiple id="new_message_recipients">
+                    <label>Recipient(s) <span class="required">*</span></label>
+                    <select name="recipients[]" class="form-control custom-select" multiple>
                         {% for user in users %}
                             <option value="{{ user.id }}" data-image="{{ user.getAvatarThumb('20') }}">{{ user.name }}</option>
                         {% endfor %}
