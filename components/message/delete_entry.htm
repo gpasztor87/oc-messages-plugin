@@ -1,0 +1,23 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        {{ form_ajax('onDeleteEntry') }}
+            <input type="hidden" name="entry_id" value="{{ entry_id }}" />
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title">
+                    <strong>Confirm</strong> message deletion
+                </h4>
+            </div>
+            <div class="modal-body text-center">
+                Do you really want to delete this message?
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-primary" value="Delete"/>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+            </div>
+        {{ form_close() }}
+    </div>
+</div>

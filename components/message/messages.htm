@@ -1,0 +1,32 @@
+{% for entry in message.entries %}
+    <div class="media" style="margin-top: 0;">
+        <a class="pull-left" href="javascript:;">
+            <img
+                src="{{ entry.user.getAvatarThumb('64') }}"
+                class="media-object img-rounded"
+                style="width: 50px; height: 50px;"
+                alt="{{ entry.user.name }}"/>
+        </a>
+        {% if user.id == entry.user_id %}
+            <div class="pull-right">
+                <a
+                    href="javascript:;"
+                    class="btn btn-primary btn-sm"
+                    data-handler="onInit"
+                    data-control="ajax-modal"
+                    data-update-partial="{{ __SELF__ }}::delete_entry"
+                    data-request-data="entry_id: {{ entry.id }}">
+                    <i class="fa fa-trash-o"></i>
+                </a>
+            </div>
+        {% endif %}
+        <div class="media-body">
+            <h4 class="media-heading" style="font-size: 14px;">
+                {{ entry.user.name }}
+                <small><time class="time" datetime="{{ entry.created_at }}">{{ entry.created_at }}</time></small>
+            </h4>
+            <span class="content">{{ entry.content|raw }}</span>
+        </div>
+    </div>
+    <hr/>
+{% endfor %}

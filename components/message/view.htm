@@ -1,0 +1,55 @@
+{% if message %}
+    <div class="panel-heading">
+        {{ message.title }}
+        <div class="pull-right">
+            {% if message.users.count > 2 and (message.originator.id != user.id) %}
+                <a
+                    href="javascript:;"
+                    class="btn btn-primary btn-sm tt"
+                    data-handler="onInit"
+                    data-control="ajax-modal"
+                    data-update-partial="{{ __SELF__ }}::leave_message"
+                    data-request-data="message_id: {{ message.id }}">
+                    <i class="fa fa-sign-out"></i>
+                </a>
+            {% endif %}
+            {% for user in message.users %}
+                <a href="javascript:;">
+                    <img
+                        src="{{ user.getAvatarThumb('64') }}"
+                        class="img-rounded tt img_margin"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="<strong>{{ user.name }}</strong><br>{{ user.login }}"
+                        style="width: 29px; height: 29px;"
+                        alt="{{ user.name }}"
+                    />
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="panel-body">
+        <hr style="margin-top: 0;" />
+        <ul class="media-list" id="message-list">
+            {% partial __SELF__ ~ '::messages' message=message %}
+        </ul>
+        <div class="row-fluid">
+            {{ form_ajax('onReplyMessage', { 'success': '$("#reply_form_content").val("");' }) }}
+                <input type="hidden" name="message_id" value="{{ message.id }}"/>
+                <div class="form-group">
+                    <textarea
+                        name="content"
+                        class="form-control"
+                        id="reply_form_content"
+                        placeholder="Write an answer..."
+                        rows="4"></textarea>
+                    </div>
+                    <hr/>
+                    <input type="submit" class="btn btn-primary" value="Send" />
+                </div>
+            {{ form_close() }}
+        </div>
+    </div>
+{% else %}
+    <div class="panel-body">There are no messages yet.</div>
+{% endif %}

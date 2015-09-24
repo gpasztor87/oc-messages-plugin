@@ -33,7 +33,7 @@ class Message extends Model
     ];
 
     public $hasMany = [
-        'entries' => ['RainLab\Messages\Models\MessageEntry']
+        'entries' => ['Autumn\Messages\Models\MessageEntry']
     ];
 
     /**

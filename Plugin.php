@@ -25,4 +25,18 @@ class Plugin extends PluginBase
         ];
     }
 
+    /**
+     * Registers any front-end components implemented in this plugin.
+     *
+     * @return array
+     */
+    public function registerComponents()
+    {
+        return [
+            'Autumn\Messages\Components\Notifications' => 'messageNotifications',
+            'Autumn\Messages\Components\Messages'      => 'messages',
+            'Autumn\Messages\Components\Message'       => 'message'
+        ];
+    }
+
 }
