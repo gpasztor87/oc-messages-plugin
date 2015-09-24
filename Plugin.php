@@ -37,7 +37,6 @@ class Plugin extends PluginBase
 
         User::extend(function($model) {
             $model->belongsToMany['conversations'] = ['Autumn\Messages\Models\Conversation', 'table' => 'conversations_users', 'order' => 'updated_at desc'];
-            //$model->hasMany['conversation'] = ['Autumn\Messages\Models\ConversationUser', 'order' => 'updated_at asc'];
         });
     }
 

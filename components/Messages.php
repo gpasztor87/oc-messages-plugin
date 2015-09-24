@@ -156,7 +156,7 @@ class Messages extends ComponentBase
         }
 
         $conversationUser = ConversationUser::where('user_id', $this->user()->id)
-            ->where('message_id', $conversation->id)->first();
+            ->where('conversation_id', $conversation->id)->first();
 
         $conversationUser->leave();
 
