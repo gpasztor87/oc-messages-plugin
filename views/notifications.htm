@@ -1,27 +1,27 @@
 {% if conversations.count %}
     {% for conversation in conversations %}
         {% set message = conversation.message %}
-        {% set users = message.users %}
+        {% set users = conversation.users %}
 
         <li class="entry{% if message.updated_at > conversation.last_viewed %} new{% endif %}">
-            <a href="{{ messagePage }}/{{ message.slug }}">
+            <a href="{{ messagePage }}/{{ conversation.slug }}">
                 <div class="media">
                     <!-- show user image -->
                     <img
-                        src="{{ message.getLastEntry.user.getAvatarThumb('32') }}"
+                        src="{{ conversation.getLastMessage.user.getAvatarThumb('32') }}"
                         class="media-object img-rounded pull-left"
-                        alt="{{ message.getLastEntry.user.name }}"
+                        alt="{{ conversation.getLastMessage.user.name }}"
                     />
 
                     <!-- show content -->
                     <div class="media-body">
-                        <strong>{{ message.getLastEntry.user.name }}
+                        <strong>{{ conversation.getLastMessage.user.name }}
                             <small>({{ users.count }}) recipients</small>
                         </strong>
-                        <h5>{{ message.title }}</h5>
-                        {{ message.getLastEntry.content }}
+                        <h5>{{ conversation.title }}</h5>
+                        {{ conversation.getLastMessage.content }}
                         <br/>
-                        <time class="time" datetime="{{ message.updated_at }}">{{ message.updated_at }}</time>
+                        <time class="time" datetime="{{ conversation.updated_at }}">{{ conversation.updated_at }}</time>
                     </div>
                 </div>
             </a>

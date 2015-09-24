@@ -7,16 +7,17 @@ use Carbon\Carbon;
 use Cms\Classes\Page;
 use Cms\Classes\ComponentBase;
 use RainLab\User\Models\User as UserModel;
-use Autumn\Messages\Models\Message as MessageModel;
-use Autumn\Messages\Models\MessageEntry;
-use Autumn\Messages\Models\UserMessage;
+use Autumn\Messages\Models\Message;
+use Autumn\Messages\Models\ConversationUser;
+use Autumn\Messages\Models\Conversation;
 use ApplicationException;
 use ValidationException;
 
 /**
  * Notifications component
  */
-class Notifications extends ComponentBase {
+class Notifications extends ComponentBase
+{
 
     /**
      * Reference to the page name for linking to messages.
@@ -28,7 +29,8 @@ class Notifications extends ComponentBase {
     /**
      * Returns information about this component, including name and description.
      */
-    public function componentDetails() {
+    public function componentDetails()
+    {
         return [
             'name'        => 'Mail Notifications',
             'description' => 'Display a mail notifications widget.'
@@ -38,7 +40,8 @@ class Notifications extends ComponentBase {
     /**
      * Defines the properties used by this class.
      */
-    public function defineProperties() {
+    public function defineProperties()
+    {
         return [
             'messagesPage' => [
                 'title'       => 'Messages page',
@@ -48,7 +51,8 @@ class Notifications extends ComponentBase {
         ];
     }
 
-    public function getMessagesPageOptions() {
+    public function getMessagesPageOptions()
+    {
         return Page::withComponent('messages')->sortBy('baseFileName')->lists('baseFileName', 'baseFileName');
     }
 
@@ -56,7 +60,8 @@ class Notifications extends ComponentBase {
      * Executed when this component is bound to a page or layout, part of
      * the page life cycle.
      */
-    public function onRun() {
+    public function onRun()
+    {
         $this->messagesPage = $this->page['messagesPage'] = $this->property('messagesPage');
         $this->page['users'] = UserModel::where('id', '!=', Auth::getUser()->id)->get();
         $this->addJs('assets/js/notification.js');
@@ -65,8 +70,8 @@ class Notifications extends ComponentBase {
     /**
      * Creates a new Message
      */
-    public function onAddMessage() {
-
+    public function onAddMessage()
+    {
         if (!$user = Auth::getUser()) {
             throw new ApplicationException('You should be logged in.');
         }
@@ -84,29 +89,29 @@ class Notifications extends ComponentBase {
             throw new ValidationException($validation);
         }
 
-        // Create new Message
-        $message = new MessageModel;
-        $message->title = input('title');
-        $message->originator_id = $user->id;
+        // Create new Conversation
+        $conversation = new Conversation;
+        $conversation->title = input('title');
+        $conversation->originator_id = $user->id;
+        $conversation->save();
+
+        // Attach Message
+        $message = new Message;
+        $message->conversation_id = $conversation->id;
+        $message->user_id = $user->id;
+        $message->content = input('message');
         $message->save();
 
-        // Attach Message Entry
-        $messageEntry = new MessageEntry;
-        $messageEntry->message_id = $message->id;
-        $messageEntry->user_id = $user->id;
-        $messageEntry->content = input('message');
-        $messageEntry->save();
-
         // Attach also Recipients
-        $message->users()->sync(input('recipients'));
+        $conversation->users()->sync(input('recipients'));
 
         // Attach User Message
-        $userMessage = new UserMessage;
-        $userMessage->message_id = $message->id;
-        $userMessage->user_id = $user->id;
-        $userMessage->is_originator = 1;
-        $userMessage->last_viewed = Carbon::now();
-        $userMessage->save();
+        $conversationUser = new ConversationUser;
+        $conversationUser->conversation_id = $conversation->id;
+        $conversationUser->user_id = $user->id;
+        $conversationUser->is_originator = 1;
+        $conversationUser->last_viewed = Carbon::now();
+        $conversationUser->save();
 
         return Redirect::back();
     }

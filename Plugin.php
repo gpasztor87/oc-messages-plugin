@@ -36,8 +36,8 @@ class Plugin extends PluginBase
         $alias->alias('Uuid', 'Webpatser\Uuid\Uuid');
 
         User::extend(function($model) {
-            $model->belongsToMany['messages'] = ['Autumn\Messages\Models\Message', 'table' => 'user_messages', 'order' => 'updated_at desc'];
-            $model->hasMany['conversations'] = ['Autumn\Messages\Models\UserMessage', 'order' => 'updated_at asc'];
+            $model->belongsToMany['conversations'] = ['Autumn\Messages\Models\Conversation', 'table' => 'conversations_users', 'order' => 'updated_at desc'];
+            //$model->hasMany['conversation'] = ['Autumn\Messages\Models\ConversationUser', 'order' => 'updated_at asc'];
         });
     }
 
@@ -50,8 +50,8 @@ class Plugin extends PluginBase
     {
         return [
             'Autumn\Messages\Components\Notifications' => 'messageNotifications',
-            'Autumn\Messages\Components\Messages'      => 'messages',
-            'Autumn\Messages\Components\Message'       => 'message'
+            'Autumn\Messages\Components\Conversations' => 'userConversations',
+            'Autumn\Messages\Components\Messages'      => 'userMessages'
         ];
     }
 

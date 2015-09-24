@@ -12,7 +12,7 @@ class CreateMessagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('messages', function($table) {
+        Schema::create('conversations', function($table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('title');
@@ -21,22 +21,22 @@ class CreateMessagesTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('user_messages', function($table) {
+        Schema::create('conversations_users', function($table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->integer('message_id')->unsigned();
+            $table->integer('conversation_id')->unsigned();
             $table->integer('user_id')->unsigned();
             $table->boolean('is_originator')->default(false);
             $table->timestamp('last_viewed');
             $table->timestamps();
-            $table->unique(['message_id', 'user_id']);
+            $table->unique(['conversation_id', 'user_id']);
         });
 
-        Schema::create('message_entry', function($table) {
+        Schema::create('conversation_messages', function($table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->integer('user_id')->unsigned()->index();
-            $table->integer('message_id')->unsigned()->index();
+            $table->integer('conversation_id')->unsigned()->index();
             $table->text('content')->nullable();
             $table->timestamps();
         });
@@ -49,9 +49,9 @@ class CreateMessagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('messages');
-        Schema::dropIfExists('user_messages');
-        Schema::dropIfExists('message_entry');
+        Schema::dropIfExists('conversations');
+        Schema::dropIfExists('conversations_users');
+        Schema::dropIfExists('conversation_messages');
     }
 
 }

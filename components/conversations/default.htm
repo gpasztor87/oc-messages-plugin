@@ -1,0 +1,39 @@
+<section class="panel panel-default">
+    <header class="panel-heading">Inbox
+        <a
+            href="javascript:;"
+            class="btn btn-info pull-right"
+            data-handler="onInit"
+            data-control="ajax-modal"
+            data-update-partial="{{ __SELF__ }}::create_message">
+            New message
+        </a>
+    </header>
+    <hr/>
+    <ul id="inbox" class="media-list">
+        {% if conversations.count %}
+            {% for conversation in conversations %}
+                <li class="entry{% if __SELF__.param('slug') == conversation.slug %} selected{% endif %}">
+                    <a href="{{ conversation.url }}">
+                        <div class="media">
+                            <img
+                                src="{{ conversation.getLastMessage.user.getAvatarThumb('32') }}"
+                                class="media-object img-rounded pull-left"
+                                alt="{{ conversation.getLastMessage.user.name }}"
+                            />
+                            <div class="media-body">
+                                <h4 class="media-heading">{{ conversation.getLastMessage.user.name }}
+                                    <small><time class="time" datetime="{{ conversation.getLastMessage.created_at }}">{{ conversation.getLastMessage.created_at }}</time></small>
+                                </h4>
+                                <h5>{{ conversation.title }}</h5>
+                                {{ conversation.getLastMessage.content|raw }}
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            {% endfor %}
+        {% else %}
+            <li class="placeholder">There are no conversations yet.</li>
+        {% endif %}
+    </ul>
+</section>

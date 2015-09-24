@@ -1,39 +1,5 @@
-<section class="panel panel-default">
-    <header class="panel-heading">Inbox
-        <a
-            href="javascript:;"
-            class="btn btn-info pull-right"
-            data-handler="onInit"
-            data-control="ajax-modal"
-            data-update-partial="{{ __SELF__ }}::create_message">
-            New message
-        </a>
-    </header>
-    <hr/>
-    <ul id="inbox" class="media-list">
-        {% if messages.count %}
-            {% for message in messages %}
-                <li class="entry">
-                    <a href="{{ message.url }}">
-                        <div class="media">
-                            <img
-                                src="{{ message.getLastEntry.user.getAvatarThumb('32') }}"
-                                class="media-object img-rounded pull-left"
-                                alt="{{ message.getLastEntry.user.name }}"
-                            />
-                            <div class="media-body">
-                                <h4 class="media-heading">{{ message.getLastEntry.user.name }}
-                                    <small><time class="time" datetime="{{ message.getLastEntry.created_at }}">{{ message.getLastEntry.created_at }}</time></small>
-                                </h4>
-                                <h5>{{ message.title }}</h5>
-                                {{ message.getLastEntry.content|raw }}
-                            </div>
-                        </div>
-                    </a>
-                </li>
-            {% endfor %}
-        {% else %}
-            <li class="placeholder">There are no messages yet.</li>
-        {% endif %}
-    </ul>
-</section>
+<div id="message_details">
+    <div class="panel panel-default" id="message-list">
+        {% partial __SELF__ ~ '::view' %}
+    </div>
+</div>

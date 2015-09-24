@@ -3,14 +3,14 @@
 use Model;
 
 /**
- * UserMessage model
+ * ConversationUser model
  */
-class UserMessage extends Model
+class ConversationUser extends Model
 {
     /**
      * @var string The database table used by the model.
      */
-    public $table = 'user_messages';
+    public $table = 'conversations_users';
 
     /**
      * The attributes that should be mutated to dates.
@@ -23,7 +23,7 @@ class UserMessage extends Model
      * @var array Relations
      */
     public $belongsTo = [
-        'message' => ['Autumn\Messages\Models\Message']
+        'conversation' => ['Autumn\Messages\Models\Conversation']
     ];
 
     /**
@@ -34,10 +34,10 @@ class UserMessage extends Model
      */
     public function leave()
     {
-        $message = Message::find($this->message_id);
+        $conversation = Conversation::find($this->conversation_id);
 
-        if ($message->users->count() < 3) {
-            $message->delete();
+        if ($conversation->users->count() < 3) {
+            $conversation->delete();
         }
         else {
             $this->delete();

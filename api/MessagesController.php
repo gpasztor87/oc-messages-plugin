@@ -14,10 +14,10 @@ class MessagesController extends Controller
     {
         if ($user = Auth::getUser()) {
 
-            $query = Db::select(Db::raw("SELECT COUNT(user_messages.message_id) as newMessages
-            FROM user_messages
-            LEFT JOIN messages ON messages.id = user_messages.message_id
-            WHERE user_messages.user_id = :user_id AND messages.updated_at > user_messages.last_viewed"), ['user_id' => $user->id]);
+            $query = Db::select(Db::raw("SELECT COUNT(conversations_users.conversation_id) as newMessages
+            FROM conversations_users
+            LEFT JOIN conversations ON conversations.id = conversations_users.conversation_id
+            WHERE conversations_users.user_id = :user_id AND conversations.updated_at > conversations_users.last_viewed"), ['user_id' => $user->id]);
 
             return Response::json($query[0]);
         }
@@ -28,7 +28,7 @@ class MessagesController extends Controller
         if ($user = Auth::getUser()) {
             $conversations = $user->conversations()->take(5)->get();
 
-            $messagePage = Page::withComponent('messages')->first();
+            $messagePage = Page::withComponent('userConversations')->first();
             $messagePage = Page::url($messagePage->baseFileName);
 
             return View::make('autumn.messages::notifications', [

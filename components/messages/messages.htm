@@ -1,30 +1,31 @@
-{% for entry in message.entries %}
+{% for message in conversation.messages %}
     <div class="media" style="margin-top: 0;">
         <a class="pull-left" href="javascript:;">
             <img
-                src="{{ entry.user.getAvatarThumb('64') }}"
+                src="{{ message.user.getAvatarThumb('64') }}"
                 class="media-object img-rounded"
                 style="width: 50px; height: 50px;"
-                alt="{{ entry.user.name }}"/>
+                alt="{{ message.user.name }}"/>
         </a>
-        {% if user.id == entry.user_id %}
+        {% if __SELF__.user.id == message.user_id and not loop.first %}
             <div class="pull-right">
                 <a
                     href="javascript:;"
                     class="btn btn-primary btn-sm"
-                    data-request="{{ __SELF__ }}::onDeleteEntry"
+                    data-request="{{ __SELF__ }}::onDeleteMessage"
                     data-request-confirm="Are you sure want to delete this message?"
-                    data-request-data="entry_id: {{ entry.id }}">
+                    data-request-update="'{{ __SELF__ }}::view': '#message-list'"
+                    data-request-data="message_id: {{ message.id }}">
                     <i class="fa fa-trash-o"></i>
                 </a>
             </div>
         {% endif %}
         <div class="media-body">
             <h4 class="media-heading" style="font-size: 14px;">
-                {{ entry.user.name }}
-                <small><time class="time" datetime="{{ entry.created_at }}">{{ entry.created_at }}</time></small>
+                {{ message.user.name }}
+                <small><time class="time" datetime="{{ message.created_at }}">{{ message.created_at }}</time></small>
             </h4>
-            <span class="content">{{ entry.content|raw }}</span>
+            <span class="content">{{ message.content|raw }}</span>
         </div>
     </div>
     <hr/>

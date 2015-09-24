@@ -1,25 +1,27 @@
 <?php namespace Autumn\Messages\Components;
 
 use Auth;
+use Redirect;
+use Validator;
+use Carbon\Carbon;
 use Cms\Classes\ComponentBase;
+use Autumn\Messages\Models\Message;
+use Autumn\Messages\Models\Conversation;
+use Autumn\Messages\Models\ConversationUser;
 use ApplicationException;
+use ValidationException;
 
+/**
+ * Messages component
+ */
 class Messages extends ComponentBase
 {
-
     /**
-     * A collection of messages to display.
+     * The conversation model used for display.
      *
-     * @var Collection
+     * @var \Autumn\Messages\Models\Conversation
      */
-    public $messages;
-
-    /**
-     * Reference to the page name for linking to messages.
-     *
-     * @var string
-     */
-    public $messagesPage;
+    public $conversation;
 
     /**
      * Returns information about this component, including name and description.
@@ -28,7 +30,7 @@ class Messages extends ComponentBase
     {
         return [
             'name'        => 'Messages',
-            'description' => 'Displays a list of user conversation on the page.'
+            'description' => 'Display a list of messages on the page.'
         ];
     }
 
@@ -40,7 +42,7 @@ class Messages extends ComponentBase
         return [
             'slug'         => [
                 'title'       => 'Slug param name',
-                'description' => 'The URL route parameter used for looking up the message by its slug.',
+                'description' => 'The URL route parameter used for looking up the conversations by its slug.',
                 'default'     => '{{ :slug }}',
                 'type'        => 'string'
             ]
@@ -53,21 +55,114 @@ class Messages extends ComponentBase
      */
     public function onRun()
     {
-        $this->messages = $this->page['messages'] = $this->loadMessages();
+        return $this->prepareMessageList();
     }
 
-    protected function loadMessages()
+    /**
+     * Returns the logged in user, if available
+     */
+    public function user()
+    {
+        if (!Auth::check()) {
+            return null;
+        }
+
+        return Auth::getUser();
+    }
+
+    protected function prepareMessageList()
+    {
+        if ($conversation = $this->getConversation()) {
+            $this->conversation = $this->page['conversation'] = $conversation;
+        }
+    }
+
+    protected function getConversation()
+    {
+        $slug = $this->property('slug');
+        $conversation = Conversation::whereSlug($slug)->first();
+
+        if ($conversation != null) {
+            $conversationUser = ConversationUser::where('user_id', $this->user()->id)
+                ->where('conversation_id', $conversation->id)->first();
+
+            if ($conversationUser != null) {
+                $conversationUser->last_viewed = Carbon::now();
+                $conversationUser->save();
+
+                return $conversation;
+            }
+        }
+        else {
+            $conversation = $this->user()->conversations->first();
+        }
+
+        return $conversation;
+    }
+
+    public function onReplyMessage()
     {
         if (!$user = Auth::getUser()) {
             throw new ApplicationException('You should be logged in.');
         }
 
-        $messages = $user->messages;
-        $messages->each(function($message) {
-            $message->setUrl($this->page->baseFileName, $this->controller);
-        });
+        $rules = [
+            'content' => 'required'
+        ];
 
-        return $messages;
+        $validation = Validator::make(input(), $rules);
+        if ($validation->fails()) {
+            throw new ValidationException($validation);
+        }
+
+        $conversation = $this->getConversation();
+
+        // Attach Message
+        $message = new Message;
+        $message->user = $user;
+        $message->conversation = $conversation;
+        $message->content = input('content');
+        $message->save();
+
+        $conversation->updated_at = Carbon::now();
+        $conversation->save();
+
+        $this->prepareMessageList();
+    }
+
+    public function onDeleteMessage()
+    {
+        $message = Message::find(input('message_id'));
+        if ($message->user_id == $this->user()->id) {
+            $message->delete();
+
+            $this->prepareMessageList();
+        }
+    }
+
+    public function onLeaveConversation()
+    {
+        $conversation = $this->getConversation(input('conversation_id'));
+        if ($conversation == null) {
+            throw new ApplicationException('Could not find conversation!');
+        }
+
+        if ($conversation->users->count() < 3) {
+            throw new ApplicationException('Could not leave conversation, needs at least 2 persons!');
+        }
+
+        if ($conversation->originator->id == Auth::getUser()->id) {
+            throw new ApplicationException('Originator could not leave his conversation!');
+        }
+
+        $conversationUser = ConversationUser::where('user_id', $this->user()->id)
+            ->where('message_id', $conversation->id)->first();
+
+        $conversationUser->leave();
+
+        return Redirect::to($this->pageUrl($this->page->baseFileName, [
+            $this->propertyName('slug') => null
+        ]));
     }
 
 }
