@@ -36,7 +36,11 @@ class Plugin extends PluginBase
         $alias->alias('Uuid', 'Webpatser\Uuid\Uuid');
 
         User::extend(function($model) {
-            $model->belongsToMany['conversations'] = ['Autumn\Messages\Models\Conversation', 'table' => 'conversations_users', 'order' => 'updated_at desc'];
+            $model->belongsToMany['conversations'] = [
+                'Autumn\Messages\Models\Conversation',
+                'table' => 'conversations_users',
+                'order' => 'updated_at desc'
+            ];
         });
     }
 

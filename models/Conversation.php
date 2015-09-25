@@ -30,7 +30,9 @@ class Conversation extends Model
     ];
 
     public $belongsToMany = [
-        'users' => ['RainLab\User\Models\User', 'table' => 'conversations_users']
+        'users' => ['RainLab\User\Models\User',
+            'table' => 'conversations_users'
+        ]
     ];
 
     public $hasMany = [
