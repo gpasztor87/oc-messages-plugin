@@ -23,6 +23,7 @@ class Plugin extends PluginBase
         return [
             'name'        => 'Messages',
             'description' => 'User communication platform.',
+            'author'      => 'Autumn',
             'icon'        => 'icon-comments'
         ];
     }
