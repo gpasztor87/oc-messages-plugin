@@ -1,6 +1,6 @@
 {
     "name": "gpasztor87/messages",
-    "description": "User communication platform.",
+    "description": "User communication platform for OctoberCMS.",
     "keywords": ["octobercms"],
     "require": {
         "php": ">=5.4.0",

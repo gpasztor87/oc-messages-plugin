@@ -2,9 +2,8 @@
     <div class="media" style="margin-top: 0;">
         <a class="pull-left" href="javascript:;">
             <img
-                src="{{ message.user.getAvatarThumb('64') }}"
+                src="{{ message.user.getAvatarThumb('50') }}"
                 class="media-object img-rounded"
-                style="width: 50px; height: 50px;"
                 alt="{{ message.user.name }}"/>
         </a>
         {% if __SELF__.user.id == message.user_id and not loop.first %}

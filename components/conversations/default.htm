@@ -19,8 +19,7 @@
                             <img
                                 src="{{ conversation.getLastMessage.user.getAvatarThumb('32') }}"
                                 class="media-object img-rounded pull-left"
-                                alt="{{ conversation.getLastMessage.user.name }}"
-                            />
+                                alt="{{ conversation.getLastMessage.user.name }}" />
                             <div class="media-body">
                                 <h4 class="media-heading">{{ conversation.getLastMessage.user.name }}
                                     <small><time class="time" datetime="{{ conversation.getLastMessage.created_at }}">{{ conversation.getLastMessage.created_at }}</time></small>
