@@ -1,6 +1,6 @@
 {% if conversation %}
     <div class="panel-heading">
-        {{ conversation.title }}
+        {{ conversation.subject }}
         <div class="pull-right">
             {% if conversation.users.count > 2 and (conversation.originator.id != __SELF__.user.id) %}
                 <a

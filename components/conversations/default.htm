@@ -24,7 +24,7 @@
                                 <h4 class="media-heading">{{ conversation.getLastMessage.user.name }}
                                     <small><time class="time" datetime="{{ conversation.getLastMessage.created_at }}">{{ conversation.getLastMessage.created_at }}</time></small>
                                 </h4>
-                                <h5>{{ conversation.title }}</h5>
+                                <h5>{{ conversation.subject }}</h5>
                                 {{ conversation.getLastMessage.content|raw }}
                             </div>
                         </div>

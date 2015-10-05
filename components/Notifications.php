@@ -80,7 +80,7 @@ class Notifications extends ComponentBase
 
         $rules = [
             'recipients' => 'required',
-            'title'      => 'required',
+            'subject'    => 'required',
             'message'    => 'required'
         ];
 
@@ -91,7 +91,7 @@ class Notifications extends ComponentBase
 
         // Create new Conversation
         $conversation = new Conversation;
-        $conversation->title = input('title');
+        $conversation->subject = input('subject');
         $conversation->originator_id = $user->id;
         $conversation->save();
 

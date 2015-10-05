@@ -16,7 +16,7 @@ class CreateMessagesTable extends Migration
         {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('title');
+            $table->string('subject');
             $table->string('slug')->index();
             $table->integer('originator_id')->index();
             $table->timestamps();
