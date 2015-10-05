@@ -10,7 +10,7 @@ class ConversationUser extends Model
     /**
      * @var string The database table used by the model.
      */
-    public $table = 'conversations_users';
+    public $table = 'autumn_conversations_users';
 
     /**
      * The attributes that should be mutated to dates.

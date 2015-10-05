@@ -13,7 +13,7 @@ class Conversation extends Model
     /**
      * @var string The database table used by the model.
      */
-    public $table = 'conversations';
+    public $table = 'autumn_conversations';
 
     /**
      * @var array Validation rules
@@ -31,7 +31,7 @@ class Conversation extends Model
 
     public $belongsToMany = [
         'users' => ['RainLab\User\Models\User',
-            'table' => 'conversations_users'
+            'table' => 'autumn_conversations_users'
         ]
     ];
 

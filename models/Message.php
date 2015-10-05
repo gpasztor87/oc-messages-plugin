@@ -10,7 +10,7 @@ class Message extends Model
     /**
      * @var string The database table used by the model.
      */
-    public $table = 'conversation_messages';
+    public $table = 'autumn_messages';
 
     /**
      * @var array Fillable fields

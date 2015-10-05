@@ -1,3 +1,4 @@
 1.0.1:
     - First version of Messages
+    - create_conversations_table.php
     - create_messages_table.php

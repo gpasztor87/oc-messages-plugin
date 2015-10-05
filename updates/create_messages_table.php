@@ -12,29 +12,7 @@ class CreateMessagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('conversations', function($table)
-        {
-            $table->engine = 'InnoDB';
-            $table->increments('id');
-            $table->string('subject');
-            $table->string('slug')->index();
-            $table->integer('originator_id')->index();
-            $table->timestamps();
-        });
-
-        Schema::create('conversations_users', function($table)
-        {
-            $table->engine = 'InnoDB';
-            $table->increments('id');
-            $table->integer('conversation_id')->unsigned();
-            $table->integer('user_id')->unsigned();
-            $table->boolean('is_originator')->default(false);
-            $table->timestamp('last_viewed');
-            $table->timestamps();
-            $table->unique(['conversation_id', 'user_id']);
-        });
-
-        Schema::create('conversation_messages', function($table)
+        Schema::create('autumn_messages', function($table)
         {
             $table->engine = 'InnoDB';
             $table->increments('id');
@@ -52,9 +30,7 @@ class CreateMessagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('conversations');
-        Schema::dropIfExists('conversations_users');
-        Schema::dropIfExists('conversation_messages');
+        Schema::dropIfExists('autumn_messages');
     }
 
 }
