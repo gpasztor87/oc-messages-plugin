@@ -1,9 +1,7 @@
 <?php namespace Autumn\Messages\Api;
 
-use Db;
 use Auth;
 use View;
-use Response;
 use Cms\Classes\Page;
 use Illuminate\Routing\Controller;
 use Autumn\Messages\Models\ConversationUser;
