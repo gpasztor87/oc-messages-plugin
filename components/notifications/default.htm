@@ -7,5 +7,25 @@
         style="display:none;"
         data-request-url="{{ url_to('api/messages/count') }}"
         class="label label-danger label-notification">1</span>
-    <ul id="dropdown-messages" class="dropdown-menu"></ul>
+    <ul class="dropdown-menu dropdown-messages">
+        <li class="dropdown-header">
+            <div class="arrow"></div> Messages
+            <a
+                class="btn btn-info btn-xs"
+                data-handler="onInit"
+                data-control="ajax-modal"
+                data-update-partial="messageNotifications::create_message"
+                id="create-message-button">
+                New message
+            </a>
+        </li>
+        <li>
+            <ul id="dropdown-messages" class="media-list"></ul>
+        </li>
+        <li>
+            <div class="dropdown-footer">
+                <a class="btn btn-default col-md-12" href="{{ messagesPage }}">Show all messages</a>
+            </div>
+        </li>
+    </ul>
 </div>

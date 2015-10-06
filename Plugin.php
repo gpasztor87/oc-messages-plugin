@@ -37,6 +37,7 @@ class Plugin extends PluginBase
         $alias->alias('Uuid', 'Webpatser\Uuid\Uuid');
 
         User::extend(function($model) {
+            $model->hasMany['messages'] = ['Autumn\Messages\Models\Message'];
             $model->belongsToMany['conversations'] = [
                 'Autumn\Messages\Models\Conversation',
                 'table' => 'autumn_conversations_users',

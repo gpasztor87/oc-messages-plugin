@@ -15,7 +15,8 @@ class MessagesController extends Controller
     {
         if ($user = Auth::getUser()) {
 
-            $query = Db::select(Db::raw("SELECT COUNT(autumn_conversations_users.conversation_id) as newMessages
+            $query = Db::select(Db::raw("
+            SELECT COUNT(autumn_conversations_users.conversation_id) as newMessages
             FROM autumn_conversations_users
             LEFT JOIN autumn_conversations ON autumn_conversations.id = autumn_conversations_users.conversation_id
             WHERE autumn_conversations_users.user_id = :user_id AND autumn_conversations.updated_at > autumn_conversations_users.last_viewed"), ['user_id' => $user->id]);
