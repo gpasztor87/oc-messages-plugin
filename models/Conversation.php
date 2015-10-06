@@ -71,8 +71,13 @@ class Conversation extends Model
 
     public function afterDelete()
     {
-        $this->messages()->delete();
-        $this->users()->detach();
+        foreach($this->messages as $message) {
+            $message->delete();
+        }
+
+        foreach ($this->users as $user) {
+            $user->detach();
+        }
     }
 
 }
