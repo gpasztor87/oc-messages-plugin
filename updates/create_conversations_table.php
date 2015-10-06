@@ -30,6 +30,7 @@ class CreateConversationsTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->boolean('is_originator')->default(false);
             $table->timestamp('last_viewed');
+            $table->timestamps();
             $table->unique(['conversation_id', 'user_id']);
         });
     }

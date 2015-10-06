@@ -11,7 +11,7 @@ function getMessageCount() {
     // load data
     $.getJSON($('#badge-messages').data('request-url'), function(json) {
         // show or hide the badge for new messages
-        $newMessages = parseInt(json.newMessages);
+        $newMessages = parseInt(json);
         if ($newMessages == 0) {
             $('#badge-messages').css('display', 'none');
         }

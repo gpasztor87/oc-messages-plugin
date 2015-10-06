@@ -103,7 +103,12 @@ class Notifications extends ComponentBase
         $message->save();
 
         // Attach also Recipients
-        $conversation->users()->sync(input('recipients'));
+        foreach(input('recipients') as $recipient) {
+            ConversationUser::create([
+                'user_id' => $recipient,
+                'conversation_id' => $conversation->id
+            ]);
+        }
 
         // Attach User Message
         $conversationUser = new ConversationUser;

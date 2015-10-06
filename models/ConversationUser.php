@@ -13,18 +13,18 @@ class ConversationUser extends Model
     public $table = 'autumn_conversations_users';
 
     /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var bool
-     */
-    public $timestamps = false;
-
-    /**
      * The attributes that should be mutated to dates.
      *
      * @var array
      */
     protected $dates = ['last_viewed'];
+
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = [];
 
     /**
      * @var array Relations

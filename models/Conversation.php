@@ -16,6 +16,13 @@ class Conversation extends Model
     public $table = 'autumn_conversations';
 
     /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = [];
+
+    /**
      * @var array Validation rules
      */
     public $rules = [
