@@ -13,8 +13,11 @@ class MessagesController extends Controller
     {
         if ($user = Auth::getUser()) {
 
-            $newMessages = ConversationUser::where('user_id', $user->id)
-                ->whereRaw('last_viewed < updated_at')
+            $newMessages = ConversationUser::leftJoin('autumn_conversations', function($join) {
+                $join->on('autumn_conversations_users.conversation_id', '=', 'autumn_conversations.id');
+            })
+                ->where('user_id', $user->id)
+                ->whereRaw('last_viewed < autumn_conversations.updated_at')
                 ->count();
 
             return $newMessages;
