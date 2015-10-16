@@ -16,9 +16,7 @@ function getMessageCount() {
             $('#badge-messages').css('display', 'none');
         }
         else {
-            $('#badge-messages').empty();
-            $('#badge-messages').append($newMessages);
-            $('#badge-messages').fadeIn('fast');
+            $('#badge-messages').empty().append($newMessages).fadeIn('fast');
         }
     });
 }
@@ -36,15 +34,11 @@ $('#icon-messages').click(function() {
     );
 
     // load newest notifications
-    $.ajax({
-        'type': 'GET',
-        'url': $(this).data('request-url'),
-        'cache': false,
-        'data': jQuery(this).parents("form").serialize(),
-        'success': function (html) {
-            $("#loader_messages").replaceWith(html);
-            $('.time').timeago();
-        }
+    $.get($(this).data('request-url'), {
+        data: $(this).parents("form").serialize()
+    }).success(function(html) {
+        $("#loader_messages").html(html);
+        $('.time').timeago();
     });
 
 });
