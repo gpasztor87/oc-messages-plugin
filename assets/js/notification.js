@@ -25,7 +25,6 @@ $('#icon-messages').click(function() {
 
     // remove all <li> entries from dropdown
     $('#dropdown-messages').find('li').remove();
-    $('#dropdown-messages').find('ul').remove();
 
     // append title and loader to dropdown
     $('#dropdown-messages').append(
@@ -37,7 +36,7 @@ $('#icon-messages').click(function() {
     $.get($(this).data('request-url'), {
         data: $(this).parents("form").serialize()
     }).success(function(html) {
-        $("#loader_messages").html(html);
+        $("#dropdown-messages").html(html);
         $('.time').timeago();
     });
 
