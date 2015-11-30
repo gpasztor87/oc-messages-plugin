@@ -2,7 +2,7 @@
 
 Route::group(['prefix' => 'api/messages'], function() {
 
-    Route::get('count', 'Autumn\Messages\Api\MessagesController@count');
-    Route::get('list',  'Autumn\Messages\Api\MessagesController@recent');
+    Route::get('count', ['as' => 'messages_count', 'uses' => 'Autumn\Messages\Api\MessagesController@count']);
+    Route::get('list',  ['as' => 'messages_list',  'uses' => 'Autumn\Messages\Api\MessagesController@recent']);
 
 });

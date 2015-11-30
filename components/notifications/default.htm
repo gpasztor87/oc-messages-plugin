@@ -1,11 +1,11 @@
 <div class="btn-group">
-    <a href="#" id="icon-messages" class="dropdown-toggle" data-toggle="dropdown" data-request-url="{{ url_to('api/messages/list') }}">
+    <a href="#" id="icon-messages" class="dropdown-toggle" data-toggle="dropdown" data-request-url="{{ route('messages_list') }}">
         <i class="fa fa-envelope"></i>
     </a>
     <span
         id="badge-messages"
         style="display:none;"
-        data-request-url="{{ url_to('api/messages/count') }}"
+        data-request-url="{{ route('messages_count') }}"
         class="label label-danger label-notification">1</span>
     <ul class="dropdown-menu dropdown-messages">
         <li class="dropdown-header">

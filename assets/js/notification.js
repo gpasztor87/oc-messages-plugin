@@ -33,9 +33,7 @@ $('#icon-messages').click(function() {
     );
 
     // load newest notifications
-    $.get($(this).data('request-url'), {
-        data: $(this).parents("form").serialize()
-    }).success(function(html) {
+    $.get($(this).data('request-url')).success(function(html) {
         $("#dropdown-messages").html(html);
         $('.time').timeago();
     });

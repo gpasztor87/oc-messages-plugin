@@ -12,8 +12,7 @@ class CreateConversationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('autumn_conversations', function($table)
-        {
+        Schema::create('autumn_conversations', function($table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('subject');
@@ -22,8 +21,7 @@ class CreateConversationsTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('autumn_conversations_users', function($table)
-        {
+        Schema::create('autumn_conversations_users', function($table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->integer('conversation_id')->unsigned();
