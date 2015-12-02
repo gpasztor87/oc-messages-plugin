@@ -133,7 +133,7 @@ class Notifications extends ComponentBase
             ->whereRaw('last_viewed < autumn_conversations.updated_at')
             ->count();
 
-        return ['count' => $newMessages + 1];
+        return ['count' => $newMessages];
     }
 
     public function onRecent()
