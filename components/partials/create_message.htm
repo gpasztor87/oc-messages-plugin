@@ -10,7 +10,7 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label>Recipient(s) <span class="required">*</span></label>
+                    <label class="control-label">Recipient(s) <span class="required">*</span></label>
                     <select name="recipients[]" class="form-control custom-select" multiple>
                         {% for user in users %}
                             <option value="{{ user.id }}" data-image="{{ user.getAvatarThumb('20') }}">{{ user.name }}</option>
@@ -19,18 +19,17 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="new_message_subject">Subject <span class="required">*</span></label>
+                    <label class="control-label" for="new_message_subject">Subject <span class="required">*</span></label>
                     <input type="text" class="form-control" name="subject" id="new_message_subject" autocomplete="off" />
                 </div>
 
                 <div class="form-group">
-                    <label for="new_message_message">Message <span class="required">*</span></label>
+                    <label class="control-label" for="new_message_message">Message <span class="required">*</span></label>
                     <textarea class="form-control" name="message" rows="5" id="new_message_message"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
-                <hr/>
-                <input type="submit" class="btn btn-primary" value="Send"/>
+                <button type="submit" class="btn btn-primary">Send</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
             </div>
         {{ form_close() }}

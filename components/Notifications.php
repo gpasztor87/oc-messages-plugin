@@ -64,7 +64,6 @@ class Notifications extends ComponentBase
     {
         $this->messagesPage = $this->page['messagesPage'] = $this->property('messagesPage');
         $this->page['users'] = UserModel::where('id', '!=', Auth::getUser()->id)->get();
-        $this->addJs('assets/js/notification.js');
     }
 
     /**
@@ -119,6 +118,41 @@ class Notifications extends ComponentBase
         $conversationUser->save();
 
         return Redirect::back();
+    }
+
+    public function onNewMessagesCount()
+    {
+        if (!$user = Auth::getUser()) {
+            throw new ApplicationException('You should be logged in.');
+        }
+
+        $newMessages = ConversationUser::leftJoin('autumn_conversations', function($join) {
+            $join->on('autumn_conversations_users.conversation_id', '=', 'autumn_conversations.id');
+        })
+            ->where('user_id', $user->id)
+            ->whereRaw('last_viewed < autumn_conversations.updated_at')
+            ->count();
+
+        return ['count' => $newMessages + 1];
+    }
+
+    public function onRecent()
+    {
+        if (!$user = Auth::getUser()) {
+            throw new ApplicationException('You should be logged in.');
+        }
+
+        $userMessages = ConversationUser::where('user_id', $user->id)
+            ->orderBy('updated_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        return [
+            '#dropdown-messages' => $this->renderPartial('@recent', [
+                'userMessages' => $userMessages,
+                'messagesPage' => $this->property('messagesPage')
+            ])
+        ];
     }
 
 }

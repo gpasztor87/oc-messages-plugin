@@ -4,7 +4,7 @@
         {% set users = conversation.users %}
 
         <li class="entry{% if conversation.updated_at > userMessage.last_viewed %} new{% endif %}">
-            <a href="{{ messagePage }}/{{ conversation.slug }}">
+            <a href="{{ messagesPage|page({'slug':conversation.slug}) }}">
                 <div class="media">
                     <!-- show user image -->
                     <img

@@ -1,12 +1,11 @@
 <div class="btn-group">
-    <a href="#" id="icon-messages" class="dropdown-toggle" data-toggle="dropdown" data-request-url="{{ route('messages_list') }}">
+    <a href="#" id="icon-messages" class="dropdown-toggle" data-toggle="dropdown" data-request="onRecent">
         <i class="fa fa-envelope"></i>
     </a>
     <span
         id="badge-messages"
         style="display:none;"
-        data-request-url="{{ route('messages_count') }}"
-        class="label label-danger label-notification">1</span>
+        class="label label-danger label-notification"></span>
     <ul class="dropdown-menu dropdown-messages">
         <li class="dropdown-header">
             <div class="arrow"></div> Messages
@@ -29,3 +28,27 @@
         </li>
     </ul>
 </div>
+{% put scripts %}
+<script>
+    // load number of new messages at page loading
+    getMessageCount();
+
+    // load number of new messages in a loop
+    setInterval(getMessageCount, 30000);
+
+    function getMessageCount() {
+        $.request("onNewMessagesCount", {
+            success: function(data) {
+                var $el = $('#badge-messages');
+
+                if (data.count == 0) {
+                    $el.css('display', 'none');
+                }
+                else {
+                    $el.html(data.count).fadeIn('fast');
+                }
+            }
+        });
+    }
+</script>
+{% endput %}
