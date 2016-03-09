@@ -18,6 +18,7 @@ class CreateConversationsTable extends Migration
             $table->string('subject');
             $table->string('slug')->index();
             $table->integer('originator_id')->index();
+            $table->softDeletes();
             $table->timestamps();
         });
 
@@ -29,6 +30,7 @@ class CreateConversationsTable extends Migration
             $table->boolean('is_originator')->default(false);
             $table->timestamp('last_viewed');
             $table->timestamps();
+            $table->softDeletes();
             $table->unique(['conversation_id', 'user_id']);
         });
     }

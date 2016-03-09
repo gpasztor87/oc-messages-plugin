@@ -7,6 +7,8 @@ use Model;
  */
 class ConversationUser extends Model
 {
+    use \October\Rain\Database\Traits\SoftDelete;
+
     /**
      * @var string The database table used by the model.
      */
