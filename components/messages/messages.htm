@@ -22,7 +22,9 @@
         <div class="media-body">
             <h4 class="media-heading" style="font-size: 14px;">
                 {{ message.user.name }}
-                <small><time class="time" datetime="{{ message.created_at }}">{{ message.created_at }}</time></small>
+                <small>
+                    <time class="time" datetime="{{ message.created_at }}">{{ message.created_at }}</time>
+                </small>
             </h4>
             <span class="content">{{ message.body|raw }}</span>
         </div>

@@ -8,18 +8,18 @@
                 <div class="media">
                     <!-- show user image -->
                     <img
-                        src="{{ conversation.getLastMessage.user.getAvatarThumb('32') }}"
+                        src="{{ conversation.last_message.user.getAvatarThumb('32') }}"
                         class="media-object img-rounded pull-left"
-                        alt="{{ conversation.getLastMessage.user.name }}"
+                        alt="{{ conversation.lastmessage.user.name }}"
                     />
 
                     <!-- show content -->
                     <div class="media-body">
-                        <strong>{{ conversation.getLastMessage.user.name }}
+                        <strong>{{ conversation.last_message.user.name }}
                             <small>({{ users.count }}) recipients</small>
                         </strong>
                         <h5>{{ conversation.subject }}</h5>
-                        {{ conversation.getLastMessage.body|raw }}
+                        {{ conversation.last_message.body|raw }}
                         <br/>
                         <time class="time" datetime="{{ conversation.updated_at }}">{{ conversation.updated_at }}</time>
                     </div>

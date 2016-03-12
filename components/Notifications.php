@@ -80,7 +80,7 @@ class Notifications extends ComponentBase
         $rules = [
             'recipients' => 'required',
             'subject'    => 'required',
-            'message'    => 'required'
+            'body'       => 'required'
         ];
 
         $validation = Validator::make($data, $rules);
@@ -91,7 +91,6 @@ class Notifications extends ComponentBase
         // Create new Conversation
         $conversation = new Conversation;
         $conversation->subject = input('subject');
-        $conversation->originator_id = $user->id;
         $conversation->save();
 
         // Attach Message

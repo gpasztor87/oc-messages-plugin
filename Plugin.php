@@ -12,7 +12,7 @@ class Plugin extends PluginBase
     /**
      * @var array Plugin dependencies
      */
-    public $require = ['RainLab.User', 'Autumn.Api'];
+    public $require = ['RainLab.User'];
 
     /**
      * Returns information about this plugin.

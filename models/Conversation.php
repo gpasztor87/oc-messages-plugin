@@ -33,10 +33,6 @@ class Conversation extends Model
     /**
      * @var array Relations
      */
-    public $belongsTo = [
-        'originator' => ['RainLab\User\Models\User']
-    ];
-
     public $belongsToMany = [
         'users' => ['RainLab\User\Models\User',
             'table' => 'autumn_conversations_users'
@@ -44,7 +40,10 @@ class Conversation extends Model
     ];
 
     public $hasMany = [
-        'messages' => ['Autumn\Messages\Models\Message']
+        'messages' => [
+            'Autumn\Messages\Models\Message',
+            'delete' => true
+        ]
     ];
 
     public function beforeCreate()
@@ -71,18 +70,26 @@ class Conversation extends Model
 
     /**
      * Returns the last message of this conversation
+     *
+     * @return \Autumn\Messages\Models\Message
      */
-    public function getLastMessage()
+    public function getLastMessageAttribute()
     {
-        return Message::where('conversation_id', $this->id)->orderBy('created_at', 'desc')->first();
+        return $this->messages()->latest()->first();
+    }
+
+    /**
+     * Returns the user object that created the conversation.
+     *
+     * @return mixed
+     */
+    public function getCreatorAttribute()
+    {
+        return $this->messages()->oldest()->first()->user;
     }
 
     public function afterDelete()
     {
-        foreach($this->messages as $message) {
-            $message->delete();
-        }
-
         foreach ($this->users as $user) {
             $user->detach();
         }

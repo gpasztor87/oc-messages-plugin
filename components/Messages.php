@@ -151,7 +151,7 @@ class Messages extends ComponentBase
             throw new ApplicationException('Could not leave conversation, needs at least 2 persons!');
         }
 
-        if ($conversation->originator->id == Auth::getUser()->id) {
+        if ($conversation->creator->id == Auth::getUser()->id) {
             throw new ApplicationException('Originator could not leave his conversation!');
         }
 

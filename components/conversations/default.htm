@@ -17,15 +17,17 @@
                     <a href="{{ conversation.url }}">
                         <div class="media">
                             <img
-                                src="{{ conversation.getLastMessage.user.getAvatarThumb('32') }}"
+                                src="{{ conversation.last_message.user.getAvatarThumb('32') }}"
                                 class="media-object img-rounded pull-left"
-                                alt="{{ conversation.getLastMessage.user.name }}" />
+                                alt="{{ conversation.last_message.user.name }}" />
                             <div class="media-body">
-                                <h4 class="media-heading">{{ conversation.getLastMessage.user.name }}
-                                    <small><time class="time" datetime="{{ conversation.getLastMessage.created_at }}">{{ conversation.getLastMessage.created_at }}</time></small>
+                                <h4 class="media-heading">{{ conversation.last_message.user.name }}
+                                    <small>
+                                        <time class="time" datetime="{{ conversation.last_message.created_at }}">{{ conversation.last_message.created_at }}</time>
+                                    </small>
                                 </h4>
                                 <h5>{{ conversation.subject }}</h5>
-                                {{ conversation.getLastMessage.body|raw }}
+                                {{ conversation.last_message.body|raw }}
                             </div>
                         </div>
                     </a>

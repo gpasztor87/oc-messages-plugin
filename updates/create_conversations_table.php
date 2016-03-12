@@ -17,7 +17,6 @@ class CreateConversationsTable extends Migration
             $table->increments('id');
             $table->string('subject');
             $table->string('slug')->index();
-            $table->integer('originator_id')->index();
             $table->softDeletes();
             $table->timestamps();
         });
