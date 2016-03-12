@@ -19,7 +19,7 @@
                             <small>({{ users.count }}) recipients</small>
                         </strong>
                         <h5>{{ conversation.subject }}</h5>
-                        {{ conversation.getLastMessage.content }}
+                        {{ conversation.getLastMessage.body|raw }}
                         <br/>
                         <time class="time" datetime="{{ conversation.updated_at }}">{{ conversation.updated_at }}</time>
                     </div>

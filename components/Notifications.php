@@ -98,7 +98,7 @@ class Notifications extends ComponentBase
         $message = new Message;
         $message->conversation_id = $conversation->id;
         $message->user_id = $user->id;
-        $message->content = input('message');
+        $message->body = input('body');
         $message->save();
 
         // Attach also Recipients

@@ -107,7 +107,7 @@ class Messages extends ComponentBase
         }
 
         $rules = [
-            'content' => 'required'
+            'body' => 'required'
         ];
 
         $validation = Validator::make(input(), $rules);
@@ -121,7 +121,7 @@ class Messages extends ComponentBase
         $message = new Message;
         $message->user = $user;
         $message->conversation = $conversation;
-        $message->content = input('content');
+        $message->body = input('body');
         $message->save();
 
         $conversation->updated_at = Carbon::now();

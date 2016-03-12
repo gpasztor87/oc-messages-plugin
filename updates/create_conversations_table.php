@@ -28,9 +28,9 @@ class CreateConversationsTable extends Migration
             $table->integer('conversation_id')->unsigned();
             $table->integer('user_id')->unsigned();
             $table->boolean('is_originator')->default(false);
-            $table->timestamp('last_viewed');
-            $table->timestamps();
+            $table->timestamp('last_viewed')->nullable();
             $table->softDeletes();
+            $table->timestamps();
             $table->unique(['conversation_id', 'user_id']);
         });
     }

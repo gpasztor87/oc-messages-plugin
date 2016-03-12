@@ -24,7 +24,7 @@
                 {{ message.user.name }}
                 <small><time class="time" datetime="{{ message.created_at }}">{{ message.created_at }}</time></small>
             </h4>
-            <span class="content">{{ message.content|raw }}</span>
+            <span class="content">{{ message.body|raw }}</span>
         </div>
     </div>
     <hr/>

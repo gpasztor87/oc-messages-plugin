@@ -15,7 +15,7 @@ class Message extends Model
     /**
      * @var array Fillable fields
      */
-    protected $fillable = ['content', 'user'];
+    protected $fillable = ['body', 'user'];
 
     /**
      * @var array Relations

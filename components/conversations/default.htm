@@ -25,7 +25,7 @@
                                     <small><time class="time" datetime="{{ conversation.getLastMessage.created_at }}">{{ conversation.getLastMessage.created_at }}</time></small>
                                 </h4>
                                 <h5>{{ conversation.subject }}</h5>
-                                {{ conversation.getLastMessage.content|raw }}
+                                {{ conversation.getLastMessage.body|raw }}
                             </div>
                         </div>
                     </a>
