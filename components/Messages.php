@@ -79,8 +79,7 @@ class Messages extends ComponentBase
 
     protected function getConversation()
     {
-        $slug = $this->property('slug');
-        $conversation = Conversation::whereSlug($slug)->first();
+        $conversation = Conversation::whereSlug($this->property('slug'))->first();
 
         if ($conversation != null) {
             $participant = Participant::where('user_id', $this->user()->id)

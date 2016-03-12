@@ -115,14 +115,7 @@ class Notifications extends ComponentBase
             throw new ApplicationException('You should be logged in.');
         }
 
-        $newMessages = Participant::leftJoin('autumn_messages_conversations', function($join) {
-            $join->on('autumn_messages_participants.conversation_id', '=', 'autumn_messages_conversations.id');
-        })
-            ->where('user_id', $user->id)
-            ->whereRaw('last_read < autumn_messages_conversations.updated_at')
-            ->count();
-
-        return ['count' => $newMessages];
+        return ['count' => $user->newMessagesCount()];
     }
 
     public function onRecent()
