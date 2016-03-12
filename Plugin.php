@@ -40,7 +40,7 @@ class Plugin extends PluginBase
             $model->hasMany['messages'] = ['Autumn\Messages\Models\Message'];
             $model->belongsToMany['conversations'] = [
                 'Autumn\Messages\Models\Conversation',
-                'table' => 'autumn_conversations_users',
+                'table' => 'autumn_messages_participants',
                 'order' => 'updated_at desc'
             ];
         });

@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use Cms\Classes\ComponentBase;
 use Autumn\Messages\Models\Message;
 use Autumn\Messages\Models\Conversation;
-use Autumn\Messages\Models\ConversationUser;
+use Autumn\Messages\Models\Participant;
 use ApplicationException;
 use ValidationException;
 
@@ -83,12 +83,12 @@ class Messages extends ComponentBase
         $conversation = Conversation::whereSlug($slug)->first();
 
         if ($conversation != null) {
-            $conversationUser = ConversationUser::where('user_id', $this->user()->id)
+            $participant = Participant::where('user_id', $this->user()->id)
                 ->where('conversation_id', $conversation->id)->first();
 
-            if ($conversationUser != null) {
-                $conversationUser->last_viewed = Carbon::now();
-                $conversationUser->save();
+            if ($participant != null) {
+                $participant->last_read = Carbon::now();
+                $participant->save();
 
                 return $conversation;
             }
@@ -155,10 +155,10 @@ class Messages extends ComponentBase
             throw new ApplicationException('Originator could not leave his conversation!');
         }
 
-        $conversationUser = ConversationUser::where('user_id', $this->user()->id)
+        $participant = Participant::where('user_id', $this->user()->id)
             ->where('conversation_id', $conversation->id)->first();
 
-        $conversationUser->leave();
+        $participant->leave();
 
         return Redirect::to($this->pageUrl($this->page->baseFileName, [
             $this->propertyName('slug') => null

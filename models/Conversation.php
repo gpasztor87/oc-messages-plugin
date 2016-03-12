@@ -14,7 +14,7 @@ class Conversation extends Model
     /**
      * @var string The database table used by the model.
      */
-    public $table = 'autumn_conversations';
+    public $table = 'autumn_messages_conversations';
 
     /**
      * The attributes that aren't mass assignable.
@@ -35,7 +35,7 @@ class Conversation extends Model
      */
     public $belongsToMany = [
         'users' => ['RainLab\User\Models\User',
-            'table' => 'autumn_conversations_users'
+            'table' => 'autumn_messages_participants'
         ]
     ];
 

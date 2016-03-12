@@ -3,14 +3,14 @@
         {% set conversation = userMessage.conversation %}
         {% set users = conversation.users %}
 
-        <li class="entry{% if conversation.updated_at > userMessage.last_viewed %} new{% endif %}">
+        <li class="entry{% if conversation.updated_at > userMessage.last_read %} new{% endif %}">
             <a href="{{ messagesPage|page({'slug':conversation.slug}) }}">
                 <div class="media">
                     <!-- show user image -->
                     <img
                         src="{{ conversation.last_message.user.getAvatarThumb('32') }}"
                         class="media-object img-rounded pull-left"
-                        alt="{{ conversation.lastmessage.user.name }}"
+                        alt="{{ conversation.last_message.user.name }}"
                     />
 
                     <!-- show content -->

@@ -10,7 +10,7 @@ class Conversations extends ComponentBase
     /**
      * A collection of conversations to display.
      *
-     * @var Collection
+     * @var \October\Rain\Database\Collection
      */
     public $conversations;
 

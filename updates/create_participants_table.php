@@ -3,7 +3,7 @@
 use Schema;
 use October\Rain\Database\Updates\Migration;
 
-class CreateConversationsTable extends Migration
+class CreateParticipantsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,13 +12,15 @@ class CreateConversationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('autumn_messages_conversations', function($table) {
+        Schema::create('autumn_messages_participants', function($table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('subject');
-            $table->string('slug')->index();
+            $table->integer('conversation_id')->unsigned();
+            $table->integer('user_id')->unsigned();
+            $table->timestamp('last_read')->nullable();
             $table->softDeletes();
             $table->timestamps();
+            $table->unique(['conversation_id', 'user_id']);
         });
     }
 
@@ -29,7 +31,6 @@ class CreateConversationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('autumn_messages_conversations');
+        Schema::dropIfExists('autumn_messages_participants');
     }
-
 }

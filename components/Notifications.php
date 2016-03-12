@@ -8,7 +8,7 @@ use Cms\Classes\Page;
 use Cms\Classes\ComponentBase;
 use RainLab\User\Models\User as UserModel;
 use Autumn\Messages\Models\Message;
-use Autumn\Messages\Models\ConversationUser;
+use Autumn\Messages\Models\Participant;
 use Autumn\Messages\Models\Conversation;
 use ApplicationException;
 use ValidationException;
@@ -102,19 +102,19 @@ class Notifications extends ComponentBase
 
         // Attach also Recipients
         foreach(input('recipients') as $recipient) {
-            ConversationUser::create([
+            Participant::create([
                 'user_id' => $recipient,
                 'conversation_id' => $conversation->id
             ]);
         }
 
         // Attach User Message
-        $conversationUser = new ConversationUser;
-        $conversationUser->conversation_id = $conversation->id;
-        $conversationUser->user_id = $user->id;
-        $conversationUser->is_originator = 1;
-        $conversationUser->last_viewed = Carbon::now();
-        $conversationUser->save();
+        $participant = new Participant;
+        $participant->conversation_id = $conversation->id;
+        $participant->user_id = $user->id;
+        $participant->is_originator = 1;
+        $participant->last_read = Carbon::now();
+        $participant->save();
 
         return Redirect::back();
     }
@@ -125,11 +125,11 @@ class Notifications extends ComponentBase
             throw new ApplicationException('You should be logged in.');
         }
 
-        $newMessages = ConversationUser::leftJoin('autumn_conversations', function($join) {
-            $join->on('autumn_conversations_users.conversation_id', '=', 'autumn_conversations.id');
+        $newMessages = Participant::leftJoin('autumn_messages_conversations', function($join) {
+            $join->on('autumn_messages_participants.conversation_id', '=', 'autumn_messages_conversations.id');
         })
             ->where('user_id', $user->id)
-            ->whereRaw('last_viewed < autumn_conversations.updated_at')
+            ->whereRaw('last_read < autumn_messages_conversations.updated_at')
             ->count();
 
         return ['count' => $newMessages];
@@ -141,7 +141,7 @@ class Notifications extends ComponentBase
             throw new ApplicationException('You should be logged in.');
         }
 
-        $userMessages = ConversationUser::where('user_id', $user->id)
+        $userMessages = Participant::where('user_id', $user->id)
             ->orderBy('updated_at', 'desc')
             ->limit(5)
             ->get();

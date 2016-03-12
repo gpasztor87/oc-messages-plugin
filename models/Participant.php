@@ -3,23 +3,23 @@
 use Model;
 
 /**
- * ConversationUser model
+ * Participant model
  */
-class ConversationUser extends Model
+class Participant extends Model
 {
     use \October\Rain\Database\Traits\SoftDelete;
 
     /**
      * @var string The database table used by the model.
      */
-    public $table = 'autumn_conversations_users';
+    public $table = 'autumn_messages_participants';
 
     /**
      * The attributes that should be mutated to dates.
      *
      * @var array
      */
-    protected $dates = ['last_viewed'];
+    protected $dates = ['last_read'];
 
     /**
      * The attributes that aren't mass assignable.
