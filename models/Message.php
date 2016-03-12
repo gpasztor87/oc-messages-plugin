@@ -8,17 +8,23 @@ use Model;
 class Message extends Model
 {
     /**
-     * @var string The database table used by the model.
+     * The database table used by the model.
+     *
+     * @var string
      */
     public $table = 'autumn_messages';
 
     /**
-     * @var array Fillable fields
+     * The attributes that can be set with Mass Assignment.
+     *
+     * @var array
      */
-    protected $fillable = ['body', 'user'];
+    protected $fillable = ['body', 'user_id', 'conversation_id'];
 
     /**
-     * @var array Relations
+     * Relations
+     *
+     * @var array
      */
     public $belongsTo = [
         'conversation' => ['Autumn\Messages\Models\Conversation'],

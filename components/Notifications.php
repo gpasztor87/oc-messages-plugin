@@ -88,33 +88,23 @@ class Notifications extends ComponentBase
             throw new ValidationException($validation);
         }
 
-        // Create new Conversation
-        $conversation = new Conversation;
-        $conversation->subject = input('subject');
-        $conversation->save();
+        $conversation = Conversation::create([
+            'subject' => input('subject')
+        ]);
 
-        // Attach Message
-        $message = new Message;
-        $message->conversation_id = $conversation->id;
-        $message->user_id = $user->id;
-        $message->body = input('body');
-        $message->save();
+        Message::create([
+            'conversation_id' => $conversation->id,
+            'user_id' => $user->id,
+            'body' => input('body')
+        ]);
 
-        // Attach also Recipients
-        foreach(input('recipients') as $recipient) {
-            Participant::create([
-                'user_id' => $recipient,
-                'conversation_id' => $conversation->id
-            ]);
-        }
+        Participant::create([
+            'conversation_id' => $conversation->id,
+            'user_id' => $user->id,
+            'last_read' => Carbon::now()
+        ]);
 
-        // Attach User Message
-        $participant = new Participant;
-        $participant->conversation_id = $conversation->id;
-        $participant->user_id = $user->id;
-        $participant->is_originator = 1;
-        $participant->last_read = Carbon::now();
-        $participant->save();
+        $conversation->addParticipants(input('recipients'));
 
         return Redirect::back();
     }

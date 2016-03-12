@@ -10,7 +10,9 @@ class Participant extends Model
     use \October\Rain\Database\Traits\SoftDelete;
 
     /**
-     * @var string The database table used by the model.
+     * The database table used by the model.
+     *
+     * @var string
      */
     public $table = 'autumn_messages_participants';
 
@@ -22,11 +24,11 @@ class Participant extends Model
     protected $dates = ['last_read'];
 
     /**
-     * The attributes that aren't mass assignable.
+     * The attributes that can be set with Mass Assignment.
      *
      * @var array
      */
-    protected $guarded = [];
+    protected $fillable = ['conversation_id', 'user_id', 'last_read'];
 
     /**
      * @var array Relations
