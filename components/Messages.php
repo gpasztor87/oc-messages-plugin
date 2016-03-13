@@ -139,29 +139,4 @@ class Messages extends ComponentBase
         }
     }
 
-    public function onLeaveThread()
-    {
-        $thread = $this->getConversation(input('thread_id'));
-        if ($thread == null) {
-            throw new ApplicationException('Could not find thread!');
-        }
-
-        if ($thread->users->count() < 3) {
-            throw new ApplicationException('Could not leave thread, needs at least 2 persons!');
-        }
-
-        if ($thread->creator->id == Auth::getUser()->id) {
-            throw new ApplicationException('Originator could not leave his thread!');
-        }
-
-        $participant = Participant::where('user_id', $this->user()->id)
-            ->where('thread_id', $thread->id)->first();
-
-        $participant->leave();
-
-        return Redirect::to($this->pageUrl($this->page->baseFileName, [
-            $this->propertyName('slug') => null
-        ]));
-    }
-
 }

@@ -63,6 +63,7 @@ class Threads extends ComponentBase
         }
 
         $threads = $user->threads;
+
         $threads->each(function($thread) {
             $thread->setUrl($this->page->baseFileName, $this->controller);
         });

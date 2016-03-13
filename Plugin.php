@@ -37,7 +37,7 @@ class Plugin extends PluginBase
         $alias->alias('Uuid', 'Webpatser\Uuid\Uuid');
 
         User::extend(function($model) {
-            $model->implement = ['Autumn\Messages\Behaviors\MessageModel'];
+            $model->implement[] = 'Autumn\Messages\Behaviors\MessageModel';
         });
     }
 

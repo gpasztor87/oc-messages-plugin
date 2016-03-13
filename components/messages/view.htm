@@ -2,17 +2,8 @@
     <div class="panel-heading">
         {{ thread.subject }}
         <div class="pull-right">
-            {% if thread.users.count > 2 and (thread.creator.id != __SELF__.user.id) %}
-                <a
-                    href="javascript:;"
-                    class="btn btn-link"
-                    data-request="{{ __SELF__ }}::onLeaveThread"
-                    data-request-confirm="Are you sure want to leave from this thread?"
-                    data-request-data="thread_id: {{ thread.id }}">
-                    <i class="fa fa-sign-out"></i>
-                </a>
-            {% endif %}
-            {% for user in thread.users %}
+            {% for participant in thread.participants %}
+                {% set user = participant.user %}
                 <a href="javascript:;">
                     <img
                         src="{{ user.getAvatarThumb('32') }}"

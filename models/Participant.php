@@ -34,25 +34,8 @@ class Participant extends Model
      * @var array Relations
      */
     public $belongsTo = [
-        'thread' => ['Autumn\Messages\Models\Thread']
+        'thread' => ['Autumn\Messages\Models\Thread'],
+        'user'   => ['RainLab\User\Models\User']
     ];
-
-    /**
-     * Leaves a thread
-     *
-     * If this is a two person thread, the thread will be deleted.
-     * If there are more than two persons, we just leave.
-     */
-    public function leave()
-    {
-        $thread = Thread::find($this->thread_id);
-
-        if ($thread->users->count() < 3) {
-            $thread->delete();
-        }
-        else {
-            $this->delete();
-        }
-    }
 
 }

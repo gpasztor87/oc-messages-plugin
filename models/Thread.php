@@ -41,17 +41,13 @@ class Thread extends Model
      *
      * @var array
      */
-    public $belongsToMany = [
-        'users' => ['RainLab\User\Models\User',
-            'table' => 'autumn_messages_participants',
-            'delete' => true
-        ]
-    ];
-
     public $hasMany = [
         'messages' => [
             'Autumn\Messages\Models\Message',
             'delete' => true
+        ],
+        'participants' => [
+            'Autumn\Messages\Models\Participant'
         ]
     ];
 
