@@ -11,30 +11,30 @@
     </header>
     <hr/>
     <ul id="inbox" class="media-list">
-        {% if conversations.count %}
-            {% for conversation in conversations %}
-                <li class="entry{% if __SELF__.param('slug') == conversation.slug %} selected{% endif %}">
-                    <a href="{{ conversation.url }}">
+        {% if thread.count %}
+            {% for thread in threads %}
+                <li class="entry{% if __SELF__.param('slug') == thread.slug %} selected{% endif %}">
+                    <a href="{{ thread.url }}">
                         <div class="media">
                             <img
-                                src="{{ conversation.last_message.user.getAvatarThumb('32') }}"
+                                src="{{ thread.last_message.user.getAvatarThumb('32') }}"
                                 class="media-object img-rounded pull-left"
-                                alt="{{ conversation.last_message.user.name }}" />
+                                alt="{{ thread.last_message.user.name }}" />
                             <div class="media-body">
-                                <h4 class="media-heading">{{ conversation.last_message.user.name }}
+                                <h4 class="media-heading">{{ thread.last_message.user.name }}
                                     <small>
-                                        <time class="time" datetime="{{ conversation.last_message.created_at }}">{{ conversation.last_message.created_at }}</time>
+                                        <time class="time" datetime="{{ thread.last_message.created_at }}">{{ thread.last_message.created_at }}</time>
                                     </small>
                                 </h4>
-                                <h5>{{ conversation.subject }}</h5>
-                                {{ conversation.last_message.body|raw }}
+                                <h5>{{ thread.subject }}</h5>
+                                {{ thread.last_message.body|raw }}
                             </div>
                         </div>
                     </a>
                 </li>
             {% endfor %}
         {% else %}
-            <li class="placeholder">There are no conversations yet.</li>
+            <li class="placeholder">There are no threads yet.</li>
         {% endif %}
     </ul>
 </section>

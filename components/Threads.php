@@ -4,15 +4,15 @@ use Auth;
 use Cms\Classes\ComponentBase;
 use ApplicationException;
 
-class Conversations extends ComponentBase
+class Threads extends ComponentBase
 {
 
     /**
-     * A collection of conversations to display.
+     * A collection of threads to display.
      *
      * @var \October\Rain\Database\Collection
      */
-    public $conversations;
+    public $threads;
 
     /**
      * Reference to the page name for linking to messages.
@@ -27,8 +27,8 @@ class Conversations extends ComponentBase
     public function componentDetails()
     {
         return [
-            'name'        => 'Conversations',
-            'description' => 'Displays a list of user conversations on the page.'
+            'name'        => 'Threads',
+            'description' => 'Displays a list of user threads on the page.'
         ];
     }
 
@@ -40,7 +40,7 @@ class Conversations extends ComponentBase
         return [
             'slug'         => [
                 'title'       => 'Slug param name',
-                'description' => 'The URL route parameter used for looking up the conversation by its slug.',
+                'description' => 'The URL route parameter used for looking up the thread by its slug.',
                 'default'     => '{{ :slug }}',
                 'type'        => 'string'
             ]
@@ -53,21 +53,21 @@ class Conversations extends ComponentBase
      */
     public function onRun()
     {
-        $this->conversations = $this->page['conversations'] = $this->loadConversations();
+        $this->threads = $this->page['threads'] = $this->loadThreads();
     }
 
-    protected function loadConversations()
+    protected function loadThreads()
     {
         if (!$user = Auth::getUser()) {
             throw new ApplicationException('You should be logged in.');
         }
 
-        $conversations = $user->conversations;
-        $conversations->each(function($conversation) {
-            $conversation->setUrl($this->page->baseFileName, $this->controller);
+        $threads = $user->threads;
+        $threads->each(function($thread) {
+            $thread->setUrl($this->page->baseFileName, $this->controller);
         });
 
-        return $conversations;
+        return $threads;
     }
 
 }

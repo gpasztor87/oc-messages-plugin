@@ -6,9 +6,9 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Conversation model
+ * Thread model
  */
-class Conversation extends Model
+class Thread extends Model
 {
     use \October\Rain\Database\Traits\Validation;
     use \October\Rain\Database\Traits\SoftDelete;
@@ -18,7 +18,7 @@ class Conversation extends Model
      *
      * @var string
      */
-    public $table = 'autumn_messages_conversations';
+    public $table = 'autumn_messages_threads';
 
     /**
      * The attributes that can be set with Mass Assignment.
@@ -61,7 +61,7 @@ class Conversation extends Model
     }
 
     /**
-     * Returns the last message of this conversation
+     * Returns the last message of this thread.
      *
      * @return \Autumn\Messages\Models\Message
      */
@@ -71,7 +71,7 @@ class Conversation extends Model
     }
 
     /**
-     * Returns the user object that created the conversation.
+     * Returns the user object that created the thread.
      *
      * @return mixed
      */
@@ -91,14 +91,14 @@ class Conversation extends Model
             foreach ($participants as $user_id) {
                 Participant::firstOrCreate([
                     'user_id' => $user_id,
-                    'conversation_id' => $this->id,
+                    'thread_id' => $this->id,
                 ]);
             }
         }
     }
 
     /**
-     * Mark a conversation as read for a user.
+     * Mark a thread as read for a user.
      *
      * @param int $userId
      */
@@ -115,7 +115,7 @@ class Conversation extends Model
     }
 
     /**
-     * See if the current conversation is unread by the user.
+     * See if the current thread is unread by the user.
      *
      * @param int $userId
      * @return bool
@@ -147,7 +147,7 @@ class Conversation extends Model
     }
 
     /**
-     * Checks to see if a user is a current participant of the conversation.
+     * Checks to see if a user is a current participant of the thread.
      *
      * @param $userId
      * @return bool

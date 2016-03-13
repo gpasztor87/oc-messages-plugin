@@ -1,18 +1,18 @@
-{% if conversation %}
+{% if thread %}
     <div class="panel-heading">
-        {{ conversation.subject }}
+        {{ thread.subject }}
         <div class="pull-right">
-            {% if conversation.users.count > 2 and (conversation.creator.id != __SELF__.user.id) %}
+            {% if thread.users.count > 2 and (thread.creator.id != __SELF__.user.id) %}
                 <a
                     href="javascript:;"
                     class="btn btn-link"
-                    data-request="{{ __SELF__ }}::onLeaveConversation"
-                    data-request-confirm="Are you sure want to leave from this conversation?"
-                    data-request-data="conversation_id: {{ conversation.id }}">
+                    data-request="{{ __SELF__ }}::onLeaveThread"
+                    data-request-confirm="Are you sure want to leave from this thread?"
+                    data-request-data="thread_id: {{ thread.id }}">
                     <i class="fa fa-sign-out"></i>
                 </a>
             {% endif %}
-            {% for user in conversation.users %}
+            {% for user in thread.users %}
                 <a href="javascript:;">
                     <img
                         src="{{ user.getAvatarThumb('32') }}"

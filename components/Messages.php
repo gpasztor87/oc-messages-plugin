@@ -6,7 +6,7 @@ use Validator;
 use Carbon\Carbon;
 use Cms\Classes\ComponentBase;
 use Autumn\Messages\Models\Message;
-use Autumn\Messages\Models\Conversation;
+use Autumn\Messages\Models\Thread;
 use Autumn\Messages\Models\Participant;
 use ApplicationException;
 use ValidationException;
@@ -17,11 +17,11 @@ use ValidationException;
 class Messages extends ComponentBase
 {
     /**
-     * The conversation model used for display.
+     * The thread model used for display.
      *
-     * @var \Autumn\Messages\Models\Conversation
+     * @var \Autumn\Messages\Models\Thread
      */
-    public $conversation;
+    public $thread;
 
     /**
      * Returns information about this component, including name and description.
@@ -42,7 +42,7 @@ class Messages extends ComponentBase
         return [
             'slug'         => [
                 'title'       => 'Slug param name',
-                'description' => 'The URL route parameter used for looking up the conversations by its slug.',
+                'description' => 'The URL route parameter used for looking up the threads by its slug.',
                 'default'     => '{{ :slug }}',
                 'type'        => 'string'
             ]
@@ -72,31 +72,31 @@ class Messages extends ComponentBase
 
     protected function prepareMessageList()
     {
-        if ($conversation = $this->getConversation()) {
-            $this->conversation = $this->page['conversation'] = $conversation;
+        if ($thread = $this->getThread()) {
+            $this->thread = $this->page['thread'] = $thread;
         }
     }
 
-    protected function getConversation()
+    protected function getThread()
     {
-        $conversation = Conversation::whereSlug($this->property('slug'))->first();
+        $thread = Thread::whereSlug($this->property('slug'))->first();
 
-        if ($conversation != null) {
+        if ($thread != null) {
             $participant = Participant::where('user_id', $this->user()->id)
-                ->where('conversation_id', $conversation->id)->first();
+                ->where('thread_id', $thread->id)->first();
 
             if ($participant != null) {
                 $participant->last_read = Carbon::now();
                 $participant->save();
 
-                return $conversation;
+                return $thread;
             }
         }
         else {
-            $conversation = $this->user()->conversations->first();
+            $thread = $this->user()->threads->first();
         }
 
-        return $conversation;
+        return $thread;
     }
 
     public function onReplyMessage()
@@ -114,17 +114,17 @@ class Messages extends ComponentBase
             throw new ValidationException($validation);
         }
 
-        $conversation = $this->getConversation();
+        $thread = $this->getThread();
 
         // Attach Message
         $message = new Message;
         $message->user = $user;
-        $message->conversation = $conversation;
+        $message->thread = $thread;
         $message->body = input('body');
         $message->save();
 
-        $conversation->updated_at = Carbon::now();
-        $conversation->save();
+        $thread->updated_at = Carbon::now();
+        $thread->save();
 
         $this->prepareMessageList();
     }
@@ -139,23 +139,23 @@ class Messages extends ComponentBase
         }
     }
 
-    public function onLeaveConversation()
+    public function onLeaveThread()
     {
-        $conversation = $this->getConversation(input('conversation_id'));
-        if ($conversation == null) {
-            throw new ApplicationException('Could not find conversation!');
+        $thread = $this->getConversation(input('thread_id'));
+        if ($thread == null) {
+            throw new ApplicationException('Could not find thread!');
         }
 
-        if ($conversation->users->count() < 3) {
-            throw new ApplicationException('Could not leave conversation, needs at least 2 persons!');
+        if ($thread->users->count() < 3) {
+            throw new ApplicationException('Could not leave thread, needs at least 2 persons!');
         }
 
-        if ($conversation->creator->id == Auth::getUser()->id) {
-            throw new ApplicationException('Originator could not leave his conversation!');
+        if ($thread->creator->id == Auth::getUser()->id) {
+            throw new ApplicationException('Originator could not leave his thread!');
         }
 
         $participant = Participant::where('user_id', $this->user()->id)
-            ->where('conversation_id', $conversation->id)->first();
+            ->where('thread_id', $thread->id)->first();
 
         $participant->leave();
 

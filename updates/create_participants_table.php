@@ -15,12 +15,12 @@ class CreateParticipantsTable extends Migration
         Schema::create('autumn_messages_participants', function($table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->integer('conversation_id')->unsigned();
+            $table->integer('thread_id')->unsigned();
             $table->integer('user_id')->unsigned();
             $table->timestamp('last_read')->nullable();
             $table->softDeletes();
             $table->timestamps();
-            $table->unique(['conversation_id', 'user_id']);
+            $table->unique(['thread_id', 'user_id']);
         });
     }
 

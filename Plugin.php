@@ -37,7 +37,7 @@ class Plugin extends PluginBase
         $alias->alias('Uuid', 'Webpatser\Uuid\Uuid');
 
         User::extend(function($model) {
-            $model->implement = ['Autumn\Messages\Behaviors\Messagable'];
+            $model->implement = ['Autumn\Messages\Behaviors\MessageModel'];
         });
     }
 
@@ -50,7 +50,7 @@ class Plugin extends PluginBase
     {
         return [
             'Autumn\Messages\Components\Notifications' => 'messageNotifications',
-            'Autumn\Messages\Components\Conversations' => 'userConversations',
+            'Autumn\Messages\Components\Threads'       => 'userThreads',
             'Autumn\Messages\Components\Messages'      => 'userMessages'
         ];
     }

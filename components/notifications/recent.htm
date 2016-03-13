@@ -1,27 +1,27 @@
 {% if userMessages.count %}
     {% for userMessage in userMessages %}
-        {% set conversation = userMessage.conversation %}
-        {% set users = conversation.users %}
+        {% set thread = userMessage.thread %}
+        {% set users = thread.users %}
 
-        <li class="entry{% if conversation.updated_at > userMessage.last_read %} new{% endif %}">
-            <a href="{{ messagesPage|page({'slug':conversation.slug}) }}">
+        <li class="entry{% if thread.updated_at > userMessage.last_read %} new{% endif %}">
+            <a href="{{ messagesPage|page({'slug':thread.slug}) }}">
                 <div class="media">
                     <!-- show user image -->
                     <img
-                        src="{{ conversation.last_message.user.getAvatarThumb('32') }}"
+                        src="{{ thread.last_message.user.getAvatarThumb('32') }}"
                         class="media-object img-rounded pull-left"
-                        alt="{{ conversation.last_message.user.name }}"
+                        alt="{{ thread.last_message.user.name }}"
                     />
 
                     <!-- show content -->
                     <div class="media-body">
-                        <strong>{{ conversation.last_message.user.name }}
+                        <strong>{{ thread.last_message.user.name }}
                             <small>({{ users.count }}) recipients</small>
                         </strong>
-                        <h5>{{ conversation.subject }}</h5>
-                        {{ conversation.last_message.body|raw }}
+                        <h5>{{ thread.subject }}</h5>
+                        {{ thread.last_message.body|raw }}
                         <br/>
-                        <time class="time" datetime="{{ conversation.updated_at }}">{{ conversation.updated_at }}</time>
+                        <time class="time" datetime="{{ thread.updated_at }}">{{ thread.updated_at }}</time>
                     </div>
                 </div>
             </a>

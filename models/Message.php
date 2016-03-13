@@ -19,7 +19,7 @@ class Message extends Model
      *
      * @var array
      */
-    protected $fillable = ['body', 'user_id', 'conversation_id'];
+    protected $fillable = ['body', 'user_id', 'thread_id'];
 
     /**
      * Relations
@@ -27,8 +27,8 @@ class Message extends Model
      * @var array
      */
     public $belongsTo = [
-        'conversation' => ['Autumn\Messages\Models\Conversation'],
-        'user'         => ['RainLab\User\Models\User']
+        'thread' => ['Autumn\Messages\Models\Thread'],
+        'user'   => ['RainLab\User\Models\User']
     ];
 
 }

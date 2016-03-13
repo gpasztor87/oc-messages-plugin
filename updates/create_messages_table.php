@@ -16,7 +16,7 @@ class CreateMessagesTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->integer('user_id')->unsigned()->index();
-            $table->integer('conversation_id')->unsigned()->index();
+            $table->integer('thread_id')->unsigned()->index();
             $table->text('body')->nullable();
             $table->timestamps();
         });

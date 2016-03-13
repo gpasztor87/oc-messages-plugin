@@ -9,7 +9,7 @@ use Cms\Classes\ComponentBase;
 use RainLab\User\Models\User as UserModel;
 use Autumn\Messages\Models\Message;
 use Autumn\Messages\Models\Participant;
-use Autumn\Messages\Models\Conversation;
+use Autumn\Messages\Models\Thread;
 use ApplicationException;
 use ValidationException;
 
@@ -88,23 +88,23 @@ class Notifications extends ComponentBase
             throw new ValidationException($validation);
         }
 
-        $conversation = Conversation::create([
+        $thread = Thread::create([
             'subject' => input('subject')
         ]);
 
         Message::create([
-            'conversation_id' => $conversation->id,
+            'thread_id' => $thread->id,
             'user_id' => $user->id,
             'body' => input('body')
         ]);
 
         Participant::create([
-            'conversation_id' => $conversation->id,
+            'thread_id' => $thread->id,
             'user_id' => $user->id,
             'last_read' => Carbon::now()
         ]);
 
-        $conversation->addParticipants(input('recipients'));
+        $thread->addParticipants(input('recipients'));
 
         return Redirect::back();
     }
@@ -115,7 +115,9 @@ class Notifications extends ComponentBase
             throw new ApplicationException('You should be logged in.');
         }
 
-        return ['count' => $user->newMessagesCount()];
+        return [
+            'count' => $user->newMessagesCount()
+        ];
     }
 
     public function onRecent()

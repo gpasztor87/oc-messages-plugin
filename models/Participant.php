@@ -28,27 +28,27 @@ class Participant extends Model
      *
      * @var array
      */
-    protected $fillable = ['conversation_id', 'user_id', 'last_read'];
+    protected $fillable = ['thread_id', 'user_id', 'last_read'];
 
     /**
      * @var array Relations
      */
     public $belongsTo = [
-        'conversation' => ['Autumn\Messages\Models\Conversation']
+        'thread' => ['Autumn\Messages\Models\Thread']
     ];
 
     /**
-     * Leaves a conversation
+     * Leaves a thread
      *
-     * If this is a two person conversation, the conversation will be deleted.
+     * If this is a two person thread, the thread will be deleted.
      * If there are more than two persons, we just leave.
      */
     public function leave()
     {
-        $conversation = Conversation::find($this->conversation_id);
+        $thread = Thread::find($this->thread_id);
 
-        if ($conversation->users->count() < 3) {
-            $conversation->delete();
+        if ($thread->users->count() < 3) {
+            $thread->delete();
         }
         else {
             $this->delete();
