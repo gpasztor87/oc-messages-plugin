@@ -1,4 +1,6 @@
-<?php namespace Autumn\Messages;
+<?php
+
+namespace Autumn\Messages;
 
 use RainLab\User\Models\User;
 use System\Classes\PluginBase;
@@ -54,5 +56,4 @@ class Plugin extends PluginBase
             'Autumn\Messages\Components\Messages'      => 'userMessages'
         ];
     }
-
 }

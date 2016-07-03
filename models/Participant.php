@@ -1,4 +1,6 @@
-<?php namespace Autumn\Messages\Models;
+<?php
+
+namespace Autumn\Messages\Models;
 
 use Model;
 
@@ -37,5 +39,4 @@ class Participant extends Model
         'thread' => ['Autumn\Messages\Models\Thread'],
         'user'   => ['RainLab\User\Models\User']
     ];
-
 }

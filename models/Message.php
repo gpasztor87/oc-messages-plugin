@@ -1,4 +1,6 @@
-<?php namespace Autumn\Messages\Models;
+<?php
+
+namespace Autumn\Messages\Models;
 
 use Model;
 
@@ -7,6 +9,8 @@ use Model;
  */
 class Message extends Model
 {
+    use \October\Rain\Database\Traits\Validation;
+
     /**
      * The database table used by the model.
      *
@@ -22,13 +26,22 @@ class Message extends Model
     protected $fillable = ['body', 'user_id', 'thread_id'];
 
     /**
+     * Validation rules.
+     *
+     * @var array
+     */
+    protected $rules = [
+        'body' => 'required',
+    ];
+
+    /**
      * Relations
      *
      * @var array
      */
     public $belongsTo = [
-        'thread' => ['Autumn\Messages\Models\Thread'],
-        'user'   => ['RainLab\User\Models\User']
+        'thread'       => ['Autumn\Messages\Models\Thread'],
+        'participants' => ['Autumn\Messages\Models\Participant'],
+        'user'         => ['RainLab\User\Models\User']
     ];
-
 }

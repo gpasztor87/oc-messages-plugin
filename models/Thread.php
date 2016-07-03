@@ -1,4 +1,6 @@
-<?php namespace Autumn\Messages\Models;
+<?php
+
+namespace Autumn\Messages\Models;
 
 use Uuid;
 use Model;
@@ -143,6 +145,17 @@ class Thread extends Model
     }
 
     /**
+     * Restores all participants within a thread that has a new message.
+     */
+    public function activateAllParticipants()
+    {
+        $participants = $this->participants()->withTrashed()->get();
+        foreach ($participants as $participant) {
+            $participant->restore();
+        }
+    }
+
+    /**
      * Checks to see if a user is a current participant of the thread.
      *
      * @param $userId
@@ -174,5 +187,4 @@ class Thread extends Model
 
         return $this->url = $controller->pageUrl($pageName, $params);
     }
-
 }

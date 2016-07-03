@@ -1,4 +1,6 @@
-<?php namespace Autumn\Messages\Behaviors;
+<?php
+
+namespace Autumn\Messages\Behaviors;
 
 use System\Classes\ModelBehavior;
 use Autumn\Messages\Models\Thread;
@@ -14,6 +16,7 @@ class MessageModel extends ModelBehavior
         parent::__construct($model);
 
         $model->hasMany['messages'] = ['Autumn\Messages\Models\Message'];
+        $model->hasMany['participants'] = ['Autumn\Messages\Models\Participant'];
         $model->belongsToMany['threads'] = [
             'Autumn\Messages\Models\Thread',
             'table' => 'autumn_messages_participants',
