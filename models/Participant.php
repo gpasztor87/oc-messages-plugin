@@ -33,7 +33,9 @@ class Participant extends Model
     protected $fillable = ['thread_id', 'user_id', 'last_read'];
 
     /**
-     * @var array Relations
+     * Relations
+     *
+     * @var array
      */
     public $belongsTo = [
         'thread' => ['Autumn\Messages\Models\Thread'],

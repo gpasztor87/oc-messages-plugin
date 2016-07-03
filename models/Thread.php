@@ -73,9 +73,21 @@ class Thread extends Model
      *
      * @return mixed
      */
-    public function getCreatorAttribute()
+    public function creator()
     {
         return $this->messages()->oldest()->first()->user;
+    }
+
+    /**
+     * Returns all threads by subject.
+     *
+     * @param $query
+     *
+     * @return mixed
+     */
+    public static function getBySubject($query)
+    {
+        return self::where('subject', 'like', $query)->get();
     }
 
     /**
@@ -98,12 +110,12 @@ class Thread extends Model
     /**
      * Mark a thread as read for a user.
      *
-     * @param int $userId
+     * @param int $user_id
      */
-    public function markAsRead($userId)
+    public function markAsRead($user_id)
     {
         try {
-            $participant = $this->getParticipantFromUser($userId);
+            $participant = $this->getParticipantFromUser($user_id);
             $participant->last_read = new Carbon();
             $participant->save();
         }
@@ -115,13 +127,14 @@ class Thread extends Model
     /**
      * See if the current thread is unread by the user.
      *
-     * @param int $userId
+     * @param int $user_id
+     *
      * @return bool
      */
-    public function isUnread($userId)
+    public function isUnread($user_id)
     {
         try {
-            $participant = $this->getParticipantFromUser($userId);
+            $participant = $this->getParticipantFromUser($user_id);
             if ($this->updated_at > $participant->last_read) {
                 return true;
             }
@@ -136,12 +149,13 @@ class Thread extends Model
     /**
      * Finds the participant record from a user id.
      *
-     * @param $userId
+     * @param int $user_id
+     *
      * @return mixed
      */
-    public function getParticipantFromUser($userId)
+    public function getParticipantFromUser($user_id)
     {
-        return $this->participants()->where('user_id', $userId)->firstOrFail();
+        return $this->participants()->where('user_id', $user_id)->firstOrFail();
     }
 
     /**
@@ -158,12 +172,13 @@ class Thread extends Model
     /**
      * Checks to see if a user is a current participant of the thread.
      *
-     * @param $userId
+     * @param int $user_id
+     *
      * @return bool
      */
-    public function hasParticipant($userId)
+    public function hasParticipant($user_id)
     {
-        $participants = $this->participants()->where('user_id', '=', $userId);
+        $participants = $this->participants()->where('user_id', '=', $user_id);
         if ($participants->count() > 0) {
             return true;
         }
@@ -172,10 +187,59 @@ class Thread extends Model
     }
 
     /**
+     * Returns array of unread messages in thread for given user.
+     *
+     * @param int $user_id
+     *
+     * @return \October\Rain\Database\Collection
+     */
+    public function userUnreadMessages($user_id)
+    {
+        $messages = $this->messages()->get();
+        $participant = $this->getParticipantFromUser($user_id);
+
+        if (!$participant) {
+            return collect();
+        }
+
+        if (!$participant->last_read) {
+            return collect($messages);
+        }
+
+        $unread = [];
+        $i = count($messages) - 1;
+
+        while ($i) {
+            if ($messages[$i]->updated_at->gt($participant->last_read)) {
+                array_push($unread, $messages[$i]);
+            } else {
+                break;
+            }
+
+            --$i;
+        }
+
+        return collect($unread);
+    }
+
+    /**
+     * Returns count of unread messages in thread for given user.
+     *
+     * @param int $user_id
+     *
+     * @return int
+     */
+    public function userUnreadMessagesCount($user_id)
+    {
+        return $this->userUnreadMessages($user_id)->count();
+    }
+
+    /**
      * Sets the "url" attribute with a URL to this object
      *
      * @param string $pageName
      * @param \Cms\Classes\Controller $controller
+     *
      * @return string
      */
     public function setUrl($pageName, $controller)
