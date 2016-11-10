@@ -56,6 +56,11 @@ class Notifications extends ComponentBase
         return Page::withComponent('messages')->sortBy('baseFileName')->lists('baseFileName', 'baseFileName');
     }
 
+    public function init()
+    {
+        $this->page['users'] = UserModel::where('id', '!=', Auth::getUser()->id)->get();
+    }
+
     /**
      * Executed when this component is bound to a page or layout, part of
      * the page life cycle.
@@ -63,7 +68,6 @@ class Notifications extends ComponentBase
     public function onRun()
     {
         $this->messagesPage = $this->page['messagesPage'] = $this->property('messagesPage');
-        $this->page['users'] = UserModel::where('id', '!=', Auth::getUser()->id)->get();
     }
 
     /**

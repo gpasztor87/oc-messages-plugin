@@ -1,7 +1,7 @@
 {% if userMessages.count %}
     {% for userMessage in userMessages %}
         {% set thread = userMessage.thread %}
-        {% set users = thread.users %}
+        {% set participants = thread.participants %}
 
         <li class="entry{% if thread.updated_at > userMessage.last_read %} new{% endif %}">
             <a href="{{ messagesPage|page({'slug':thread.slug}) }}">
@@ -16,7 +16,7 @@
                     <!-- show content -->
                     <div class="media-body">
                         <strong>{{ thread.last_message.user.name }}
-                            <small>({{ users.count }}) recipients</small>
+                            <small>({{ participants.count }}) recipients</small>
                         </strong>
                         <h5>{{ thread.subject }}</h5>
                         {{ thread.last_message.body|raw }}
